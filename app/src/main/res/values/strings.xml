@@ -1,0 +1,22 @@
+<resources>
+
+    <string name="maps_api_key">AIzaSyCIznt8eGgFJrX6VFetdgSUSQF9aPEj5Vg</string>
+
+    <string name="app_name">Ejemplo_CardView_RecyclerView</string>
+
+    <string name="btn_Agregar">Agregar</string>
+    <string name="btn_Volver">Volver</string>
+    <string name="btn_Aceptar">Aceptar</string>
+    <string name="btn_Cancelar">Cancelar</string>
+    <string name="btn_Ingresar">Ingresar</string>
+
+    <string name="info_nombre">Nombre: </string>
+    <string name="info_fecha">Fecha: </string>
+    <string name="info_direccion">Direccion: </string>
+    <string name="info_ciudad">Ciudad: </string>
+    <string name="info_precio">Precio: </string>
+    <string name="info_artista">artista: </string>
+
+    <string name="filtro">Filtrar por: </string>
+    <string name="title_activity_maps">MapsActivity</string>
+</resources>
