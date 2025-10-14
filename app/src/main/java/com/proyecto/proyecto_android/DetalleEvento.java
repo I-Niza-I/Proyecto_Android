@@ -33,6 +33,8 @@ public class DetalleEvento extends AppCompatActivity implements OnMapReadyCallba
     private Button boton;
     private TextView txtNombre, txtArtista, txtDireccion, txtCiudad, txtFecha, txtPrecio;
     private ImageView imvFoto;
+    private Double latitud;
+    private Double longitud;
 
 
     @Override
@@ -62,6 +64,8 @@ public class DetalleEvento extends AppCompatActivity implements OnMapReadyCallba
         ciudad = getIntent().getStringExtra("ciudad");
         precio = getIntent().getIntExtra("precio", 0);
         imagen = getIntent().getIntExtra("imagen", 0);
+        latitud = getIntent().getDoubleExtra("latitud", 0);
+        longitud = getIntent().getDoubleExtra("longitud", 0);
 
         txtNombre.setText(nombre);
         txtArtista.setText(artista);
@@ -91,8 +95,8 @@ public class DetalleEvento extends AppCompatActivity implements OnMapReadyCallba
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        LatLng sydney = new LatLng(latitud, longitud);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marcador de: "+direccion));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }

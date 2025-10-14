@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 // Adaptador personalizado para el RecyclerView.
@@ -68,6 +70,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 intent.putExtra("ciudad", evento.getCiudad());
                 intent.putExtra("precio", evento.getPrecio());
                 intent.putExtra("imagen", evento.getImagen());
+                intent.putExtra("latitud", evento.getLatitud());
+                intent.putExtra("longitud", evento.getLongitud());
 
                 contexto.startActivity(intent);
             }
@@ -104,7 +108,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             tv_precio_evento = itemView.findViewById(R.id.tv_precio_Evento);
             iv_imagen_evento = itemView.findViewById(R.id.iv_imagen_Evento);
             cv_tarjeta = itemView.findViewById(R.id.cv_tarjeta);
-
         }
     }
 }

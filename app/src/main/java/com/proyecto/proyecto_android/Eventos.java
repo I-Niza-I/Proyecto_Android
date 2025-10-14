@@ -1,5 +1,7 @@
 package com.proyecto.proyecto_android;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class Eventos {
     private int imagen;
     private String nombre;
@@ -8,8 +10,10 @@ public class Eventos {
     private String direccion;
     private String ciudad;
     private int precio;
+    private Double latitud;
+    private Double longitud;
 
-    public Eventos( int imagen, String nombre,  String artista, String fecha, String direccion, String ciudad, int precio) {
+    public Eventos( int imagen, String nombre,  String artista, String fecha, String direccion, String ciudad, int precio, double latitud, double longitud) {
 
         this.imagen = imagen;
         this.nombre = nombre;
@@ -18,6 +22,24 @@ public class Eventos {
         this.direccion = direccion;
         this.ciudad = ciudad;
         this.precio = precio;
+        this.latitud = latitud;
+        this.longitud = longitud;
+    }
+
+    public Double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
+    }
+
+    public Double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
     }
 
     public int getImagen() {

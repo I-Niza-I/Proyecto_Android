@@ -81,10 +81,10 @@ public class EventosMusicales extends AppCompatActivity {
     // Metodo destinado a crear los objetos y rellenar la ArrayList
     public void rellenarLista(){
 
-        Eventos e1 = new Eventos( R.drawable.alberto_plaza, "Tour 40 años Sinfónico", "Alberto Plaza","30/10/2025", "Enjoy Coquimbo - Peñuelas Norte, Coquimbo, Chile", "Coquimbo", 32200 );
-        Eventos e2 = new Eventos( R.drawable.sonido_del_misterio, "Lanzamiento nuevo disco “El sonido del Misterio” + Grandes Éxitos en La Serena", "De Saloon", "29/10/2025", "Gregorio Cordovez 391, 1710116 La Serena, Region de Coquimbo, Chile", "La Serena", 25000);
-        Eventos e3 = new Eventos( R.drawable.temporada_conciertos, "La Danza del Piano", "David Greilsammer",  "30/10/2025", "Colegio Alemán La Serena Avenida 4 esquinas, La Serena, Región de Coquimbo, Chile", "La Serena", 11000);
-        Eventos e4 = new Eventos( R.drawable.danza_del_piano,"Diciembre Temporada de Conciertos La Serena 2025","Abono Octubre", "1/11/2025", "Colegio Alemán La Serena Avenida 4 esquinas, La Serena, Región de Coquimbo, Chile", "La Serena", 10500);
+        Eventos e1 = new Eventos( R.drawable.alberto_plaza, "Tour 40 años Sinfónico", "Alberto Plaza","30/10/2025", "Enjoy Coquimbo - Peñuelas Norte, Coquimbo, Chile", "Coquimbo", 32200,-34, 151 );
+        Eventos e2 = new Eventos( R.drawable.sonido_del_misterio, "Lanzamiento nuevo disco “El sonido del Misterio” + Grandes Éxitos en La Serena", "De Saloon", "29/10/2025", "Gregorio Cordovez 391, 1710116 La Serena, Region de Coquimbo, Chile", "La Serena", 25000,-34, 151);
+        Eventos e3 = new Eventos( R.drawable.temporada_conciertos, "La Danza del Piano", "David Greilsammer",  "30/10/2025", "Colegio Alemán La Serena Avenida 4 esquinas, La Serena, Región de Coquimbo, Chile", "La Serena", 11000,-34, 151);
+        Eventos e4 = new Eventos( R.drawable.danza_del_piano,"Diciembre Temporada de Conciertos La Serena 2025","Abono Octubre", "1/11/2025", "Colegio Alemán La Serena Avenida 4 esquinas, La Serena, Región de Coquimbo, Chile", "La Serena", 10500,-34, 151);
 
 
         listaEventos.addAll(Arrays.asList(new Eventos[] {e1, e2, e3, e4}));
