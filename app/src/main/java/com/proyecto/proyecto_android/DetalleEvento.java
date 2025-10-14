@@ -95,8 +95,8 @@ public class DetalleEvento extends AppCompatActivity implements OnMapReadyCallba
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(latitud, longitud);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marcador de: "+direccion));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng ubicacionEvento = new LatLng(latitud, longitud);
+        mMap.addMarker(new MarkerOptions().position(ubicacionEvento).title("Marcador de: "+direccion));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubicacionEvento, 15f), 2000, null);
     }
 }
