@@ -1,22 +1,19 @@
 package com.proyecto.proyecto_android;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class EventosMusicales extends AppCompatActivity {
+
+public class EventosMusicalesFragment extends Fragment {
 
     // Declaracion del atributo de tipo RecyclerView
     private RecyclerView recyclerView;
@@ -28,57 +25,40 @@ public class EventosMusicales extends AppCompatActivity {
     // Creacion del gestor del layout: Organiza los items en el layout
     private RecyclerView.LayoutManager layoutManager;
 
-    private Button btnVolver;
     private ArrayList<Eventos> listaEventos = new ArrayList<>(); // ArrayList para almacenar los objetos
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_eventos_musicales);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_eventos_musicales, container, false);
 
         rellenarLista(); // Llamada al metodo para rellenar la ArrayList
-
-        btnVolver = (Button) findViewById(R.id.btnVolver);
-
-        btnVolver.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(EventosMusicales.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
 
 
         // Se define la variable declarada anteriormente haciendo referencia ->
         // al recyclerview creado en el layout.
-        recyclerView = (RecyclerView) findViewById(R.id.revEventosMusicales);
+        recyclerView = (RecyclerView) view.findViewById(R.id.revEventosMusicales);
 
         // Este metodo indica que el tamaño del RecyclerView no cambiara aunque se modifiquen los elementos.
         recyclerView.setHasFixedSize(true);
 
         // define la variable layoutManager, en este caso define cómo se van a mostrar los ítems ->
         // uno debajo de otro, osea una lista vertical.
-        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(requireContext());
 
         // Asigna el LayoutManager creado al RecyclerView.
         recyclerView.setLayoutManager(layoutManager);
 
         // Crea una instancia del adaptador personalizado, pasándole la lista de datos (listaEventos)
         // y el contexto actual (this) para poder inflar layouts o acceder a recursos.
-        myAdapter = new RecyclerViewAdapter(listaEventos, this);
+        myAdapter = new RecyclerViewAdapter(listaEventos, requireContext());
         // Asigna el adaptador creado al RecyclerView.
         recyclerView.setAdapter(myAdapter);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        return view;
     }
 
-
-    // Metodo destinado a crear los objetos y rellenar la ArrayList
     public void rellenarLista(){
 
         Eventos e1 = new Eventos( R.drawable.alberto_plaza, "Tour 40 años Sinfónico", "Alberto Plaza","30/10/2025", "Enjoy Coquimbo - Peñuelas Norte, Coquimbo, Chile", "Coquimbo", 32200,-29.946895, -71.291297 );

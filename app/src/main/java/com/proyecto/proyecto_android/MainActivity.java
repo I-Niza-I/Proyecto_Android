@@ -2,18 +2,29 @@ package com.proyecto.proyecto_android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
+import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button boton;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,28 +32,67 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        boton = (Button) findViewById(R.id.btnIngresar);
+        // Inicializar los atributos creados
+        drawerLayout = findViewById(R.id.drawer_layout);
+        toolbar = findViewById(R.id.toolbar);
+        navigationView = findViewById(R.id.nav_view);
 
-        boton.setOnClickListener(new View.OnClickListener(){
+
+        // Crea un ActionBarDrawerToggle
+        // controla el estado de abierto y cerrado de la tarjeta
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.nav_abrir, R.string.nav_cerrar);
+
+        // Se agrega el toggle como un listener del drawer layout
+        drawerLayout.addDrawerListener(toggle);
+
+        // Synchronize the toggle's state with the linked DrawerLayout
+        toggle.syncState();
+
+        // Set a listener for when an item in the NavigationView is selected
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+
             @Override
-            public void onClick(View view){
-                Intent intent = new Intent(MainActivity.this, EventosMusicales.class);
-                startActivity(intent);
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                // Handle the selected item based on its ID
+                if (item.getItemId() == R.id.nav_eventos) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new EventosMusicalesFragment())
+                            .addToBackStack(null)
+                            .commit();
+                }
+
+                if (item.getItemId() == R.id.nav_historial) {
+
+                }
+
+                if (item.getItemId() == R.id.nav_favoritos) {
+
+                }
+
+                // Cierra la tarjeta despues de seleccionar
+                drawerLayout.closeDrawers();
+                return true;
+            }
+
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            // Called when the back button is pressed.
+            @Override
+            public void handleOnBackPressed() {
+                // Check if the drawer is open
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    // Close the drawer if it's open
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                } else {
+                    // Finish the activity if the drawer is closed
+                    finish();
+                }
             }
         });
 
-        boton.setOnLongClickListener(new View.OnLongClickListener(){
-            @Override
-            public boolean onLongClick(View view){
-
-                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                startActivity(intent);
-
-                return false;
-            }
-        });
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.drawer_layout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;

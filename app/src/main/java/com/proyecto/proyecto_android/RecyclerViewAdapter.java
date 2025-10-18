@@ -2,6 +2,7 @@ package com.proyecto.proyecto_android;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -61,19 +65,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View view){
                 Eventos evento = listaEventos.get(holder.getBindingAdapterPosition());
-                Intent intent = new Intent(contexto, DetalleEvento.class);
 
-                intent.putExtra("nombre", evento.getNombre());
-                intent.putExtra("artista", evento.getArtista());
-                intent.putExtra("direccion", evento.getDireccion());
-                intent.putExtra("fecha", evento.getFecha());
-                intent.putExtra("ciudad", evento.getCiudad());
-                intent.putExtra("precio", evento.getPrecio());
-                intent.putExtra("imagen", evento.getImagen());
-                intent.putExtra("latitud", evento.getLatitud());
-                intent.putExtra("longitud", evento.getLongitud());
+                DetalleEventoFragment fragment = new DetalleEventoFragment();
+                Bundle args = new Bundle();
 
-                contexto.startActivity(intent);
+                args.putString("nombre", evento.getNombre());
+                args.putString("artista", evento.getArtista());
+                args.putString("direccion", evento.getDireccion());
+                args.putString("fecha", evento.getFecha());
+                args.putString("ciudad", evento.getCiudad());
+                args.putInt("precio", evento.getPrecio());
+                args.putInt("imagen", evento.getImagen());
+                args.putDouble("latitud", evento.getLatitud());
+                args.putDouble("longitud", evento.getLongitud());
+
+                fragment.setArguments(args);
+
+                // Navegar al fragment (depende de tu implementación de Navigation)
+                FragmentManager fragmentManager = ((AppCompatActivity)contexto).getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment); // Ajusta el ID del contenedor
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 

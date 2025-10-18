@@ -19,4 +19,7 @@
 
     <string name="filtro">Filtrar por: </string>
     <string name="title_activity_maps">MapsActivity</string>
+
+    <string name="nav_abrir">Open</string>
+    <string name="nav_cerrar">Close</string>
 </resources>
