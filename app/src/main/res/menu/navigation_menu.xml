@@ -20,15 +20,16 @@
     </group>
     <!-- Separadores abajo -->
     <item
-        android:id="@+id/separator1"
-        android:title=""
-        android:icon="@android:color/transparent"
-        android:enabled="false"/>
+        android:id="@+id/nav_Crear_evento"
+        android:title="Crear_evento"
+        android:enabled="false"
+        android:visible="false"/>
     <item
-        android:id="@+id/separator2"
-        android:title=""
+        android:id="@+id/nav_Perfil"
+        android:title="Perfil"
         android:icon="@android:color/transparent"
-        android:enabled="false"/>
+        android:enabled="false"
+        android:visible="false"/>
     <item
         android:id="@+id/separator3"
         android:title=""
@@ -91,7 +92,14 @@
         <item
             android:id="@+id/nav_inicioSesion"
             android:title="Iniciar Sesión"
-            android:icon="@drawable/ic_action_sesion"/>
+            android:icon="@drawable/ic_action_sesion"
+            android:enabled="true"
+            android:visible="true"/>
+        <item
+            android:id="@+id/nav_CerrarSesion"
+            android:title="CerrarSesion"
+            android:enabled="false"
+            android:visible="false"/>
     </group>
 
 </menu>
