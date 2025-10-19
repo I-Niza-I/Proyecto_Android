@@ -19,17 +19,19 @@
             android:icon="@drawable/ic_action_guar"/>
     </group>
     <!-- Separadores abajo -->
-    <item
-        android:id="@+id/nav_Crear_evento"
-        android:title="Crear_evento"
-        android:enabled="false"
-        android:visible="false"/>
-    <item
-        android:id="@+id/nav_Perfil"
-        android:title="Perfil"
-        android:icon="@android:color/transparent"
-        android:enabled="false"
-        android:visible="false"/>
+    <group>
+        <item
+            android:id="@+id/nav_crear_evento"
+            android:title="Crear evento"
+            android:enabled="false"
+            android:visible="false"/>
+        <item
+            android:id="@+id/nav_perfil"
+            android:title="perfil"
+            android:icon="@android:color/transparent"
+            android:enabled="false"
+            android:visible="false"/>
+    </group>
     <item
         android:id="@+id/separator3"
         android:title=""
@@ -96,8 +98,8 @@
             android:enabled="true"
             android:visible="true"/>
         <item
-            android:id="@+id/nav_CerrarSesion"
-            android:title="CerrarSesion"
+            android:id="@+id/nav_cerrarSesion"
+            android:title="Cerrar Sesion"
             android:enabled="false"
             android:visible="false"/>
     </group>

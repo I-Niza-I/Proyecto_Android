@@ -9,6 +9,7 @@ import java.util.Arrays;
 public class MyApplication extends Application {
 
     private static MyApplication instance;
+    private static Organizacion cuentaLogueada;
     private static ArrayList<Eventos> listaEventos = new ArrayList<Eventos>();
     private static ArrayList<Eventos> eventosFavoritos = new ArrayList<Eventos>();
     private static ArrayList<Eventos> historialEventos = new ArrayList<Eventos>();
@@ -19,6 +20,7 @@ public class MyApplication extends Application {
         super.onCreate();
         instance = this;
         rellenarEventos();
+        rellenarOrganizacion();
     }
 
     public void rellenarEventos(){
@@ -33,13 +35,10 @@ public class MyApplication extends Application {
 
     public void rellenarOrganizacion(){
         Organizacion o1 = new Organizacion("12345678-9", "NombreGenerico", "ejemplo1@gmail.com", "descripcion", "1234");
-        Organizacion o2 = new Organizacion("98765432-1", "NombreGenerico", "ejemplo2@gmail.com", "descripcion", "1234");
+        Organizacion o2 = new Organizacion("98765432-1", "NombreGenerico2", "ejemplo2@gmail.com", "descripcion2", "4321");
         listaCuentas.addAll(Arrays.asList(new Organizacion[] {o1,  o2}));
     }
 
-    public static MyApplication getInstance() {
-        return instance;
-    }
 
     // Métodos para modificar los arrays
     public void agregarFavorito(Eventos evento) {
@@ -88,6 +87,27 @@ public class MyApplication extends Application {
                     .show();
         }
         return eventosFavoritos.contains(evento);
+    }
+
+    public boolean isSesionActiva() {
+        return cuentaLogueada != null;
+    }
+
+    public void iniciarSesion(Organizacion cuenta) {
+        cuentaLogueada = cuenta;
+    }
+
+    public void cerrarSesion() {
+        cuentaLogueada = null;
+    }
+
+    public Organizacion getCuentaLogueada() {
+        return cuentaLogueada;
+    }
+
+
+    public static MyApplication getInstance() {
+        return instance;
     }
 
     public static void setInstance(MyApplication instance) {

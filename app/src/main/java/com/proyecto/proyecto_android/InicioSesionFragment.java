@@ -49,9 +49,11 @@ public class InicioSesionFragment extends Fragment {
                     }
                 }
                 if(cuentaObtenida != null){
-                    Toast.makeText(requireContext(), "Cuenta existe, iniciando sesion", Toast.LENGTH_SHORT).show();
+                    myApplication.iniciarSesion(cuentaObtenida);
+                    ((MainActivity) requireActivity()).actualizarMenuDrawer();
+                    Toast.makeText(requireContext(), "Iniciando sesion", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(requireContext(), "La cuenta no existe, rechazando inicio", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "La cuenta no existe\nInicio de sesion rechazado", Toast.LENGTH_SHORT).show();
                 }
 
             }

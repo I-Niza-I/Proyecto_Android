@@ -2,6 +2,7 @@ package com.proyecto.proyecto_android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private MyApplication myApplication;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
@@ -31,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        myApplication = (MyApplication) getApplication();
 
         // Inicializar los atributos creados
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -84,14 +88,23 @@ public class MainActivity extends AppCompatActivity {
                             .addToBackStack(null)
                             .commit();
                 }
-                if (item.getItemId() == R.id.nav_Crear_evento) {
+                if (item.getItemId() == R.id.nav_crear_evento) {
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragment_container, new CrearEventoFragment())
                             .addToBackStack(null)
                             .commit();
                 }
-                if (item.getItemId() == R.id.nav_Perfil) {
+                if (item.getItemId() == R.id.nav_perfil) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new Perfil())
+                            .addToBackStack(null)
+                            .commit();
+                }
+                if (item.getItemId() == R.id.nav_cerrarSesion) {
+                    myApplication.cerrarSesion();
+                    actualizarMenuDrawer();
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragment_container, new Perfil())
@@ -126,5 +139,21 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+    }
+
+    public void actualizarMenuDrawer() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+
+        boolean sesionActiva = myApplication.isSesionActiva();
+
+        // Elementos visibles solo si hay sesión activa
+        menu.findItem(R.id.nav_crear_evento).setVisible(sesionActiva).setEnabled(sesionActiva);;
+        menu.findItem(R.id.nav_perfil).setVisible(sesionActiva).setEnabled(sesionActiva);;
+        menu.findItem(R.id.nav_cerrarSesion).setVisible(sesionActiva).setEnabled(sesionActiva);
+
+        // Elementos públicos
+        menu.findItem(R.id.nav_inicioSesion).setVisible(!sesionActiva);
     }
 }
