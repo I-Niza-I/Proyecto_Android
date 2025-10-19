@@ -41,6 +41,8 @@
     <string name="inicio_sesion_rut_placeholder">Ingrese su Rut Empresarial</string>
     <string name="inicio_sesion_password">contraseña</string>
     <string name="inicio_sesion_password_placeholder">Ingrese su contraseña</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
