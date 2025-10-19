@@ -2,13 +2,14 @@
 
     <string name="maps_api_key">AIzaSyCIznt8eGgFJrX6VFetdgSUSQF9aPEj5Vg</string>
 
-    <string name="app_name">Ejemplo_CardView_RecyclerView</string>
+    <string name="app_name">Eventos Musicales</string>
 
     <string name="btn_Agregar">Agregar</string>
     <string name="btn_Volver">Volver</string>
     <string name="btn_Aceptar">Aceptar</string>
     <string name="btn_Cancelar">Cancelar</string>
     <string name="btn_Ingresar">Ingresar</string>
+    <string name="btn_agregar_favoritos">Agregar a Favoritos</string>
 
     <string name="info_nombre">Nombre: </string>
     <string name="info_fecha">Fecha: </string>
@@ -17,9 +18,16 @@
     <string name="info_precio">Precio: </string>
     <string name="info_artista">artista: </string>
 
+    <string name="titulo_favoritos">Eventos Favoritos</string>
+    <string name="descripcion_favoritos">Eventos guardados por el usuario</string>
+
+    <string name="titulo_historial">Eventos Guardados</string>
+    <string name="descripcion_historial">Eventos guardados automaticamente por el sistema</string>
+
     <string name="filtro">Filtrar por: </string>
     <string name="title_activity_maps">MapsActivity</string>
 
     <string name="nav_abrir">Open</string>
     <string name="nav_cerrar">Close</string>
+
 </resources>

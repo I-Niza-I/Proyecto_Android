@@ -7,9 +7,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,9 +28,10 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
 
+    private MyApplication myApplication;
     private String nombre, artista, direccion, ciudad, fecha;
     private int imagen, precio;
-    private Button boton;
+    private Button botonAgregar;
     private TextView txtNombre, txtArtista, txtDireccion, txtCiudad, txtFecha, txtPrecio;
     private ImageView imvFoto;
     private Double latitud;
@@ -42,6 +47,8 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        myApplication = (MyApplication) requireActivity().getApplication();
+
         if (getArguments() != null) {
             nombre = getArguments().getString("nombre");
             artista = getArguments().getString("artista");
@@ -53,6 +60,8 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
             latitud = getArguments().getDouble("latitud", 0);
             longitud = getArguments().getDouble("longitud", 0);
         }
+
+        botonAgregar = (Button) view.findViewById(R.id.btn_agregar_favoritos);
 
         // Inicializar vistas
         txtNombre = view.findViewById(R.id.txtNombre);
@@ -80,14 +89,33 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
         txtPrecio.setText("$"+precio);
         imvFoto.setImageResource(imagen);
 
+        botonAgregar.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Eventos evento = new Eventos(imagen, nombre, artista, fecha, direccion, ciudad, precio, latitud, longitud);
+                if(myApplication.esFavorito(evento)){
+                    Toast.makeText(requireContext(), "Este evento ya esta guardado en favoritos", Toast.LENGTH_SHORT).show();
+                }else{
+                    EventosMusicalesFragment fragment = new EventosMusicalesFragment();
+                    Toast.makeText(requireContext(), "Evento guardado en Favoritos", Toast.LENGTH_SHORT).show();
+
+                    myApplication.agregarFavorito(evento);
+
+                    FragmentManager fragmentManager = ((AppCompatActivity)requireContext()).getSupportFragmentManager();
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.fragment_container, fragment); // Ajusta el ID del contenedor
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                }
+            }
+        });
         return view;
     }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
+        // Agrega el marcador, mueve la camara y hace zoom
         LatLng ubicacionEvento = new LatLng(latitud, longitud);
         mMap.addMarker(new MarkerOptions().position(ubicacionEvento).title("Marcador de: "+direccion));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubicacionEvento, 15f), 2000, null);

@@ -24,14 +24,14 @@ import java.util.ArrayList;
 // Se encarga de "conectar" los datos de la lista con las vistas de cada ítem en el RecyclerView.
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
-
     ArrayList<Eventos> listaEventos;
     Context contexto;
-
+    MyApplication myApplication;
     // Metodo que recibe la lista de datos y el contexto desde la Activity donde se usa el RecyclerView.
     public RecyclerViewAdapter(ArrayList<Eventos> listaEventos, Context contexto) {
         this.listaEventos = listaEventos;
         this.contexto = contexto;
+        this.myApplication = (MyApplication) contexto.getApplicationContext();
     }
 
 
@@ -65,23 +65,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View view){
                 Eventos evento = listaEventos.get(holder.getBindingAdapterPosition());
-
+                myApplication.agregarAlHistorial(evento);
                 DetalleEventoFragment fragment = new DetalleEventoFragment();
-                Bundle args = new Bundle();
+                Bundle bundle = new Bundle();
 
-                args.putString("nombre", evento.getNombre());
-                args.putString("artista", evento.getArtista());
-                args.putString("direccion", evento.getDireccion());
-                args.putString("fecha", evento.getFecha());
-                args.putString("ciudad", evento.getCiudad());
-                args.putInt("precio", evento.getPrecio());
-                args.putInt("imagen", evento.getImagen());
-                args.putDouble("latitud", evento.getLatitud());
-                args.putDouble("longitud", evento.getLongitud());
+                bundle.putString("nombre", evento.getNombre());
+                bundle.putString("artista", evento.getArtista());
+                bundle.putString("direccion", evento.getDireccion());
+                bundle.putString("fecha", evento.getFecha());
+                bundle.putString("ciudad", evento.getCiudad());
+                bundle.putInt("precio", evento.getPrecio());
+                bundle.putInt("imagen", evento.getImagen());
+                bundle.putDouble("latitud", evento.getLatitud());
+                bundle.putDouble("longitud", evento.getLongitud());
 
-                fragment.setArguments(args);
+                fragment.setArguments(bundle);
 
-                // Navegar al fragment (depende de tu implementación de Navigation)
                 FragmentManager fragmentManager = ((AppCompatActivity)contexto).getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.fragment_container, fragment); // Ajusta el ID del contenedor

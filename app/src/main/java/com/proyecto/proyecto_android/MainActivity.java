@@ -63,11 +63,19 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (item.getItemId() == R.id.nav_historial) {
-
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new HistorialFragment())
+                            .addToBackStack(null)
+                            .commit();
                 }
 
                 if (item.getItemId() == R.id.nav_favoritos) {
-
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new FavoritosFragment())
+                            .addToBackStack(null)
+                            .commit();
                 }
 
                 // Cierra la tarjeta despues de seleccionar
