@@ -5,13 +5,16 @@
 
     <item
         android:id="@+id/nav_eventos"
-        android:title="Eventos" />
+        android:title="Eventos"
+        android:icon="@drawable/ic_action_search"/>
 
     <item
         android:id="@+id/nav_historial"
-        android:title="Historial" />
+        android:title="Historial"
+        android:icon="@drawable/ic_action_reto"/>
     <item
         android:id="@+id/nav_favoritos"
-        android:title="Favoritos" />
+        android:title="Favoritos"
+        android:icon="@drawable/ic_action_guar"/>
 
 </menu>
