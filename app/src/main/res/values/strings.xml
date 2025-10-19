@@ -24,10 +24,23 @@
     <string name="titulo_historial">Eventos Guardados</string>
     <string name="descripcion_historial">Eventos guardados automaticamente por el sistema</string>
 
+    <string name="titulo_crear_evento">Creacion de Evento</string>
+    <string name="crear_evento_nombre">Nombre del Evento</string>
+    <string name="crear_evento_descripcion">Descripcion del Evento</string>
+    <string name="crear_evento_precio">Precio del Evento</string>
+    <string name="crear_evento_Direccion">Direccion del Evento</string>
+    <string name="crear_evento_localizacion">Localizacion del Evento</string>
+
     <string name="filtro">Filtrar por: </string>
     <string name="title_activity_maps">MapsActivity</string>
 
     <string name="nav_abrir">Open</string>
     <string name="nav_cerrar">Close</string>
+    <string name="inicio_sesion">Iniciar sesion como empresa</string>
+    <string name="inicio_sesion_rut">Rut empresarial</string>
+    <string name="inicio_sesion_rut_placeholder">Ingrese su Rut Empresarial</string>
+    <string name="inicio_sesion_password">contraseña</string>
+    <string name="inicio_sesion_password_placeholder">Ingrese su contraseña</string>
+
 
 </resources>
