@@ -77,6 +77,13 @@ public class MainActivity extends AppCompatActivity {
                             .addToBackStack(null)
                             .commit();
                 }
+                if (item.getItemId() == R.id.nav_inicioSesion) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new InicioSesionFragment())
+                            .addToBackStack(null)
+                            .commit();
+                }
 
                 // Cierra la tarjeta despues de seleccionar
                 drawerLayout.closeDrawers();

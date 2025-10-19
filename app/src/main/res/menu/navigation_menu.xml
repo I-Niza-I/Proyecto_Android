@@ -1,20 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="HardcodedText">
+    tools:ignore="ExtraText,HardcodedText">
 
-    <item
-        android:id="@+id/nav_eventos"
-        android:title="Eventos"
-        android:icon="@drawable/ic_action_search"/>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_eventos"
+            android:title="Eventos"
+            android:icon="@drawable/ic_action_search"/>
 
+        <item
+            android:id="@+id/nav_historial"
+            android:title="Historial"
+            android:icon="@drawable/ic_action_reto"/>
+        <item
+            android:id="@+id/nav_favoritos"
+            android:title="Favoritos"
+            android:icon="@drawable/ic_action_guar"/>
+    </group>
+    <!-- Separadores abajo -->
     <item
-        android:id="@+id/nav_historial"
-        android:title="Historial"
-        android:icon="@drawable/ic_action_reto"/>
+        android:id="@+id/separator1"
+        android:title=""
+        android:icon="@android:color/transparent"
+        android:enabled="false"/>
     <item
-        android:id="@+id/nav_favoritos"
-        android:title="Favoritos"
-        android:icon="@drawable/ic_action_guar"/>
+        android:id="@+id/separator2"
+        android:title=""
+        android:icon="@android:color/transparent"
+        android:enabled="false"/>
+    <item
+        android:id="@+id/separator3"
+        android:title=""
+        android:icon="@android:color/transparent"
+        android:enabled="false"/>
+    <item
+        android:id="@+id/separator4"
+        android:title=""
+        android:icon="@android:color/transparent"
+        android:enabled="false"/>
+    <item
+        android:id="@+id/separator5"
+        android:title=""
+        android:icon="@android:color/transparent"
+        android:enabled="false"/>
+    <item
+        android:id="@+id/separator6"
+        android:title=""
+        android:icon="@android:color/transparent"
+        android:enabled="false"/>
+    <item
+        android:id="@+id/separator7"
+        android:title=""
+        android:icon="@android:color/transparent"
+        android:enabled="false"/>
+    <item
+        android:id="@+id/separator8"
+        android:title=""
+        android:icon="@android:color/transparent"
+        android:enabled="false"/>
+    <item
+        android:id="@+id/separator9"
+        android:title=""
+        android:icon="@android:color/transparent"
+        android:enabled="false"/>
+    <item
+        android:id="@+id/separator10"
+        android:title=""
+        android:icon="@android:color/transparent"
+        android:enabled="false"/>
+    <item
+        android:id="@+id/separator11"
+        android:title=""
+        android:icon="@android:color/transparent"
+        android:enabled="false"/>
+    <item
+        android:id="@+id/separator12"
+        android:title=""
+        android:icon="@android:color/transparent"
+        android:enabled="false"/>
+    <item
+        android:id="@+id/separator13"
+        android:title=""
+        android:icon="@android:color/transparent"
+        android:enabled="false"/>
+
+    <group
+        android:id="@+id/bottom_group"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_inicioSesion"
+            android:title="Iniciar Sesión"
+            android:icon="@drawable/ic_action_sesion"/>
+    </group>
 
 </menu>
