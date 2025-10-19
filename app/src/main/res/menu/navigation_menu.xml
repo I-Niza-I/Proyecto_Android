@@ -23,12 +23,13 @@
         <item
             android:id="@+id/nav_crear_evento"
             android:title="Crear evento"
+            android:icon="@drawable/ic_action_crea"
             android:enabled="false"
             android:visible="false"/>
         <item
             android:id="@+id/nav_perfil"
             android:title="perfil"
-            android:icon="@android:color/transparent"
+            android:icon="@drawable/ic_action_sesion"
             android:enabled="false"
             android:visible="false"/>
     </group>
@@ -100,6 +101,7 @@
         <item
             android:id="@+id/nav_cerrarSesion"
             android:title="Cerrar Sesion"
+            android:icon="@drawable/ic_action_cerrarsesion"
             android:enabled="false"
             android:visible="false"/>
     </group>
