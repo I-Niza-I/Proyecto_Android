@@ -36,11 +36,14 @@
 
     <string name="nav_abrir">Open</string>
     <string name="nav_cerrar">Close</string>
-    <string name="inicio_sesion">Iniciar sesion como empresa</string>
+    <string name="inicio_sesion">Iniciar sesion</string>
+    <string name="inicio_sesion_descripcion">Iniciar sesion como empresa</string>
     <string name="inicio_sesion_rut">Rut empresarial</string>
     <string name="inicio_sesion_rut_placeholder">Ingrese su Rut Empresarial</string>
     <string name="inicio_sesion_password">contraseña</string>
     <string name="inicio_sesion_password_placeholder">Ingrese su contraseña</string>
-
+    <string name="inicio_sesion_recuperar_password">¿Olvidaste la contraseña?</string>
+    <string name="inicio_sesion_nocuenta">¿No tiene una cuenta y desea postear los eventos musicales que realiza su empresa u organizacion?</string>
+    <string name="inicio_sesion_contacto"><u><b><i>¡Contactanos!</i></b></u></string>
 
 </resources>
