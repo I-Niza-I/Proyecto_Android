@@ -51,7 +51,7 @@ public class HistorialFragment extends Fragment {
 
         // Crea una instancia del adaptador personalizado, pasándole la lista de datos (listaEventos)
         // y el contexto actual (this) para poder inflar layouts o acceder a recursos.
-        myAdapter = new RecyclerViewAdapter(listaHistorial, requireContext());
+        myAdapter = new RecyclerViewAdapter(listaHistorial, requireContext(), true);
         // Asigna el adaptador creado al RecyclerView.
         recyclerView.setAdapter(myAdapter);
 

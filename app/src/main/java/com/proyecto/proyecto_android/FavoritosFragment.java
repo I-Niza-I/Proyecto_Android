@@ -20,7 +20,7 @@ public class FavoritosFragment extends Fragment {
 
     // Creacion del adaptador: Este actua como un "puente" entre los datos y lo visual
     // toma los datos y los convierte en vistas
-    private RecyclerView.Adapter myAdapter;
+    private RecyclerViewAdapter myAdapter;
 
     // Creacion del gestor del layout: Organiza los items en el layout
     private RecyclerView.LayoutManager layoutManager;
@@ -52,7 +52,7 @@ public class FavoritosFragment extends Fragment {
 
         // Crea una instancia del adaptador personalizado, pasándole la lista de datos (listaEventos)
         // y el contexto actual (this) para poder inflar layouts o acceder a recursos.
-        myAdapter = new RecyclerViewAdapter(listaFavoritos, requireContext());
+        myAdapter = new RecyclerViewAdapter(listaFavoritos, requireContext(), true);
         // Asigna el adaptador creado al RecyclerView.
         recyclerView.setAdapter(myAdapter);
 

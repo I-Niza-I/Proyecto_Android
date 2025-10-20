@@ -59,7 +59,6 @@ public class MyApplication extends Application {
         if (!historialEventos.contains(evento)) {
             historialEventos.add(0, evento);
         }else{
-            int index = historialEventos.indexOf(evento);
             historialEventos.remove(evento);
             historialEventos.add(0, evento);
         }

@@ -34,8 +34,8 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
     private Button botonAgregar;
     private TextView txtNombre, txtArtista, txtDireccion, txtCiudad, txtFecha, txtPrecio, txtDescripcion;
     private ImageView imvFoto;
-    private Double latitud;
-    private Double longitud;
+    private Double latitud, longitud;
+    private boolean yaEsFavorito = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,24 +84,31 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
         txtPrecio.setText("$" + precio);
         imvFoto.setImageResource(imagen);
 
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            yaEsFavorito = bundle.getBoolean("esFavorito", false);
+
+            if (yaEsFavorito) {
+                botonAgregar.setText("Eliminar de Favoritos");
+            }
+        }
 
         botonAgregar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Eventos evento = new Eventos(imagen, nombre, descripcion, artista, fecha, direccion, ciudad, precio, latitud, longitud);
-                if(myApplication.esFavorito(evento)){
-                    Toast.makeText(requireContext(), "Este evento ya esta guardado en favoritos", Toast.LENGTH_SHORT).show();
-                }else{
-                    EventosMusicalesFragment fragment = new EventosMusicalesFragment();
-                    Toast.makeText(requireContext(), "Evento guardado en Favoritos", Toast.LENGTH_SHORT).show();
+                Eventos eventoActual = new Eventos(imagen, nombre, descripcion, artista, fecha, direccion, ciudad, precio, latitud, longitud);
+                if (yaEsFavorito) {
+                    myApplication.removerFavorito(eventoActual);
+                    Toast.makeText(requireContext(), "Evento eliminado de Favoritos", Toast.LENGTH_SHORT).show();
 
-                    myApplication.agregarFavorito(evento);
+                    botonAgregar.setText("Agregar a Favoritos");
+                    yaEsFavorito = false;
 
-                    FragmentManager fragmentManager = ((AppCompatActivity)requireContext()).getSupportFragmentManager();
-                    FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    transaction.replace(R.id.fragment_container, fragment); // Ajusta el ID del contenedor
-                    transaction.addToBackStack(null);
-                    transaction.commit();
+                } else {
+                    myApplication.agregarFavorito(eventoActual);
+
+                    botonAgregar.setText("Eliminar de Favoritos");
+                    yaEsFavorito = true;
                 }
             }
         });

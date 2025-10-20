@@ -30,12 +30,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private boolean esDesdeFavoritosOHistorial;
 
     // Metodo que recibe la lista de datos y el contexto desde la Activity donde se usa el RecyclerView.
-    public RecyclerViewAdapter(ArrayList<Eventos> listaEventos, Context contexto) {
+    public RecyclerViewAdapter(ArrayList<Eventos> listaEventos, Context contexto, boolean esDesdeFavoritosOHistorial) {
         this.listaEventos = listaEventos;
         this.contexto = contexto;
         this.myApplication = (MyApplication) contexto.getApplicationContext();
+        this.esDesdeFavoritosOHistorial = esDesdeFavoritosOHistorial;
     }
 
+    public RecyclerViewAdapter(ArrayList<Eventos> listaEventos, Context contexto) {
+        this(listaEventos, contexto, false);
+    }
 
     // Metodo donde se "infla" o "carga" el layout XML
     // representa un ítem individual de la lista (evento_layout.xml)
@@ -68,7 +72,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View view){
                 Eventos evento = listaEventos.get(holder.getBindingAdapterPosition());
-                myApplication.agregarAlHistorial(evento);
+                if (!esDesdeFavoritosOHistorial) {
+                    myApplication.agregarAlHistorial(evento);
+                }
                 DetalleEventoFragment fragment = new DetalleEventoFragment();
                 Bundle bundle = new Bundle();
 
@@ -82,6 +88,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 bundle.putInt("imagen", evento.getImagen());
                 bundle.putDouble("latitud", evento.getLatitud());
                 bundle.putDouble("longitud", evento.getLongitud());
+
+                if (esDesdeFavoritosOHistorial || myApplication.esFavorito(evento)) {
+                    bundle.putBoolean("esFavorito", true);
+                } else {
+                    bundle.putBoolean("esFavorito", false);
+                }
 
                 fragment.setArguments(bundle);
 
