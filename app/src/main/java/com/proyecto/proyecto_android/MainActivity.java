@@ -49,15 +49,23 @@ public class MainActivity extends AppCompatActivity {
         // Se agrega el toggle como un listener del drawer layout
         drawerLayout.addDrawerListener(toggle);
 
-        // Synchronize the toggle's state with the linked DrawerLayout
         toggle.syncState();
 
-        // Set a listener for when an item in the NavigationView is selected
+        //se inicia el fragment de eventos musicales al iniciar la aplicacion
+        if (savedInstanceState == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new EventosMusicalesFragment())
+                    .commit();
+
+            navigationView.setCheckedItem(R.id.nav_eventos);
+        }
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                // Handle the selected item based on its ID
+
                 if (item.getItemId() == R.id.nav_eventos) {
                     getSupportFragmentManager()
                             .beginTransaction()
@@ -112,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                             .commit();
                 }
 
-                // Cierra la tarjeta despues de seleccionar
+
                 drawerLayout.closeDrawers();
                 return true;
             }
@@ -120,15 +128,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-            // Called when the back button is pressed.
+
             @Override
             public void handleOnBackPressed() {
-                // Check if the drawer is open
+
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    // Close the drawer if it's open
+
                     drawerLayout.closeDrawer(GravityCompat.START);
                 } else {
-                    // Finish the activity if the drawer is closed
+
                     finish();
                 }
             }
