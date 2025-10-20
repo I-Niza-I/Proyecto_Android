@@ -81,13 +81,7 @@ public class MainActivity extends AppCompatActivity {
                             .addToBackStack(null)
                             .commit();
                 }
-                if (item.getItemId() == R.id.nav_inicioSesion) {
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, new InicioSesionFragment())
-                            .addToBackStack(null)
-                            .commit();
-                }
+
                 if (item.getItemId() == R.id.nav_crear_evento) {
                     getSupportFragmentManager()
                             .beginTransaction()
@@ -104,14 +98,23 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (item.getItemId() == R.id.nav_cerrarSesion) {
                     myApplication.cerrarSesion();
-                    actualizarMenuDrawer();
+
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.fragment_container, new Perfil())
+                            .replace(R.id.fragment_container, new EventosMusicalesFragment())
+                            .addToBackStack(null)
+                            .commit();
+
+                }
+                if (item.getItemId() == R.id.nav_inicioSesion) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new InicioSesionFragment())
                             .addToBackStack(null)
                             .commit();
                 }
 
+                actualizarMenuDrawer();
                 // Cierra la tarjeta despues de seleccionar
                 drawerLayout.closeDrawers();
                 return true;
@@ -148,12 +151,12 @@ public class MainActivity extends AppCompatActivity {
 
         boolean sesionActiva = myApplication.isSesionActiva();
 
-        // Elementos visibles solo si hay sesión activa
-        menu.findItem(R.id.nav_crear_evento).setVisible(sesionActiva).setEnabled(sesionActiva);;
-        menu.findItem(R.id.nav_perfil).setVisible(sesionActiva).setEnabled(sesionActiva);;
+        // Elementos visibles solo si hay sesion activa
+        menu.findItem(R.id.nav_crear_evento).setVisible(sesionActiva).setEnabled(sesionActiva);
+        menu.findItem(R.id.nav_perfil).setVisible(sesionActiva).setEnabled(sesionActiva);
         menu.findItem(R.id.nav_cerrarSesion).setVisible(sesionActiva).setEnabled(sesionActiva);
 
-        // Elementos públicos
-        menu.findItem(R.id.nav_inicioSesion).setVisible(!sesionActiva);
+        // Elementos usuario comun
+        menu.findItem(R.id.nav_inicioSesion).setVisible(!sesionActiva).setEnabled(!sesionActiva);
     }
 }
