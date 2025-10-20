@@ -46,4 +46,23 @@
     <string name="inicio_sesion_nocuenta">¿No tiene una cuenta y desea postear los eventos musicales que realiza su empresa u organizacion?</string>
     <string name="inicio_sesion_contacto"><u><b><i>¡Contactanos!</i></b></u></string>
 
+    <string name="crear_nombre_placeholder">Ingresar nombre del evento</string>
+    <string name="crear_descripcion_placeholder">Ingresar descripcion del evento </string>
+    <string name="crear_artista_placeholder">Ingresar artista del evento </string>
+    <string name="crear_aforo_placeholder">aforo maximo del evento </string>
+    <string name="crear_coste_placeholder">$20.000 </string>
+    <string name="crear_direccion_placeholder">ingresar direccion del evento </string>
+
+    <string name="crear_nombre">Nombre del evento</string>
+    <string name="crear_descripcion">Descripcion del evento</string>
+    <string name="crear_artista">Artista del evento </string>
+    <string name="crear_aforo">Aforo del evento </string>
+    <string name="crear_coste">Coste del evento </string>
+    <string name="crear_direccion">Direccion del evento </string>
+    <string name="crear_fecha">Fecha del evento </string>
+    <string name="crear_ciudad">Ciudad del evento </string>
+    <string name="crear_localizacion">Seleccione la localizacion exacta donde se realizara el evento</string>
+
+    <string name="btn_publicar">Publicar Evento</string>
+
 </resources>

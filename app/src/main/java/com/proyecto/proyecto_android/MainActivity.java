@@ -49,23 +49,15 @@ public class MainActivity extends AppCompatActivity {
         // Se agrega el toggle como un listener del drawer layout
         drawerLayout.addDrawerListener(toggle);
 
+        // Synchronize the toggle's state with the linked DrawerLayout
         toggle.syncState();
 
-        //se inicia el fragment de eventos musicales al iniciar la aplicacion
-        if (savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new EventosMusicalesFragment())
-                    .commit();
-
-            navigationView.setCheckedItem(R.id.nav_eventos);
-        }
-
+        // Set a listener for when an item in the NavigationView is selected
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
+                // Handle the selected item based on its ID
                 if (item.getItemId() == R.id.nav_eventos) {
                     getSupportFragmentManager()
                             .beginTransaction()
@@ -89,13 +81,7 @@ public class MainActivity extends AppCompatActivity {
                             .addToBackStack(null)
                             .commit();
                 }
-                if (item.getItemId() == R.id.nav_inicioSesion) {
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, new InicioSesionFragment())
-                            .addToBackStack(null)
-                            .commit();
-                }
+
                 if (item.getItemId() == R.id.nav_crear_evento) {
                     getSupportFragmentManager()
                             .beginTransaction()
@@ -112,15 +98,24 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (item.getItemId() == R.id.nav_cerrarSesion) {
                     myApplication.cerrarSesion();
-                    actualizarMenuDrawer();
+
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.fragment_container, new Perfil())
+                            .replace(R.id.fragment_container, new EventosMusicalesFragment())
+                            .addToBackStack(null)
+                            .commit();
+
+                }
+                if (item.getItemId() == R.id.nav_inicioSesion) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new InicioSesionFragment())
                             .addToBackStack(null)
                             .commit();
                 }
 
-
+                actualizarMenuDrawer();
+                // Cierra la tarjeta despues de seleccionar
                 drawerLayout.closeDrawers();
                 return true;
             }
@@ -128,15 +123,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-
+            // Called when the back button is pressed.
             @Override
             public void handleOnBackPressed() {
-
+                // Check if the drawer is open
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-
+                    // Close the drawer if it's open
                     drawerLayout.closeDrawer(GravityCompat.START);
                 } else {
-
+                    // Finish the activity if the drawer is closed
                     finish();
                 }
             }
@@ -156,12 +151,12 @@ public class MainActivity extends AppCompatActivity {
 
         boolean sesionActiva = myApplication.isSesionActiva();
 
-        // Elementos visibles solo si hay sesión activa
-        menu.findItem(R.id.nav_crear_evento).setVisible(sesionActiva).setEnabled(sesionActiva);;
-        menu.findItem(R.id.nav_perfil).setVisible(sesionActiva).setEnabled(sesionActiva);;
+        // Elementos visibles solo si hay sesion activa
+        menu.findItem(R.id.nav_crear_evento).setVisible(sesionActiva).setEnabled(sesionActiva);
+        menu.findItem(R.id.nav_perfil).setVisible(sesionActiva).setEnabled(sesionActiva);
         menu.findItem(R.id.nav_cerrarSesion).setVisible(sesionActiva).setEnabled(sesionActiva);
 
-        // Elementos públicos
-        menu.findItem(R.id.nav_inicioSesion).setVisible(!sesionActiva);
+        // Elementos usuario comun
+        menu.findItem(R.id.nav_inicioSesion).setVisible(!sesionActiva).setEnabled(!sesionActiva);
     }
 }

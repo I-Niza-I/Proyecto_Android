@@ -1,78 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".CrearEventoFragment"
+        tools:layout_editor_absoluteY="1dp">
 
-    <EditText
-        android:id="@+id/editTextText4"
-        android:layout_width="302dp"
-        android:layout_height="78dp"
-        android:height="49dp"
-        android:ems="10"
-        android:hint="Coste"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.545" />
 
-    <EditText
-        android:id="@+id/editTextText"
-        android:layout_width="302dp"
-        android:layout_height="78dp"
-        android:height="49dp"
-        android:ems="10"
-        android:hint="Nombre del evento"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.119" />
+        <EditText
+            android:id="@+id/edt_direccion"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:height="49dp"
+            android:background="@drawable/forma_edit_text"
+            android:ems="10"
+            android:hint="@string/crear_direccion_placeholder"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="@+id/edt_descripcion"
+            app:layout_constraintStart_toStartOf="@+id/txt_direccion"
+            app:layout_constraintTop_toBottomOf="@+id/txt_direccion" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="310dp"
-        android:layout_height="54dp"
-        android:text="@string/titulo_crear_evento"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.544"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        <EditText
+            android:id="@+id/edt_nombre"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:height="49dp"
+            android:background="@drawable/forma_edit_text"
+            android:ems="10"
+            android:hint="@string/crear_nombre_placeholder"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_nombre"
+            tools:ignore="TouchTargetSizeCheck" />
 
-    <EditText
-        android:id="@+id/editTextText3"
-        android:layout_width="301dp"
-        android:layout_height="143dp"
-        android:height="49dp"
-        android:ems="10"
-        android:hint="Descripcion del Evento"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.328" />
+        <TextView
+            android:id="@+id/txt_titulo"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/titulo_crear_evento"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.544"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="153dp"
-        android:layout_height="60dp"
-        android:text="Enviar y esperar respuesta"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/edt_descripcion"
+            android:layout_width="0dp"
+            android:layout_height="125dp"
+            android:layout_marginTop="16dp"
+            android:height="49dp"
+            android:background="@drawable/forma_edit_text"
+            android:ems="10"
+            android:textStyle="bold"
+            android:hint="@string/crear_descripcion_placeholder"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="@+id/edt_nombre"
+            app:layout_constraintHorizontal_bias="0.288"
+            app:layout_constraintStart_toStartOf="@+id/edt_nombre"
+            app:layout_constraintTop_toBottomOf="@+id/txt_descripcion" />
+
+        <TextView
+            android:id="@+id/txt_nombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="@string/crear_nombre"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_titulo" />
+
+        <TextView
+            android:id="@+id/txt_descripcion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="@string/crear_descripcion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edt_nombre" />
+
+        <TextView
+            android:id="@+id/txt_direccion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="@string/crear_direccion"
+            app:layout_constraintStart_toStartOf="@+id/edt_descripcion"
+            app:layout_constraintTop_toBottomOf="@+id/edt_descripcion" />
+
+        <TextView
+            android:id="@+id/txt_fecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:text="@string/crear_fecha"
+            app:layout_constraintStart_toStartOf="@+id/edt_direccion"
+            app:layout_constraintTop_toBottomOf="@+id/edt_direccion" />
+
+        <EditText
+            android:id="@+id/edt_fecha"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/forma_edit_text"
+            android:ems="10"
+            android:hint="10/12/2025"
+            android:inputType="date"
+            app:layout_constraintEnd_toEndOf="@+id/edt_direccion"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/txt_fecha"
+            app:layout_constraintTop_toBottomOf="@+id/txt_fecha" />
+
+        <TextView
+            android:id="@+id/txt_ciudad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="@string/crear_ciudad"
+            app:layout_constraintStart_toStartOf="@+id/edt_fecha"
+            app:layout_constraintTop_toBottomOf="@+id/edt_fecha" />
+
+        <Spinner
+            android:id="@+id/spn_ciudades"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="128dp"
+            android:background="@drawable/forma_edit_text"
+            android:entries="@array/array_ciudades"
+            app:layout_constraintEnd_toEndOf="@+id/edt_fecha"
+            app:layout_constraintStart_toStartOf="@+id/txt_ciudad"
+            app:layout_constraintTop_toBottomOf="@+id/txt_ciudad" />
+
+        <TextView
+            android:id="@+id/txt_coste"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="@string/crear_coste"
+            app:layout_constraintStart_toStartOf="@+id/spn_ciudades"
+            app:layout_constraintTop_toBottomOf="@+id/spn_ciudades" />
+
+        <EditText
+            android:id="@+id/edt_coste"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/forma_edit_text"
+            android:ems="10"
+            android:hint="@string/crear_coste_placeholder"
+            android:inputType="number"
+            app:layout_constraintStart_toStartOf="@+id/txt_coste"
+            app:layout_constraintTop_toBottomOf="@+id/txt_coste" />
+
+        <TextView
+            android:id="@+id/txt_localizacion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="@string/crear_localizacion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/edt_coste"
+            app:layout_constraintTop_toBottomOf="@+id/edt_coste" />
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/txt_localizacion"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/txt_localizacion"
+            app:layout_constraintTop_toBottomOf="@+id/txt_localizacion"
+            tools:context=".MapsActivity" />
+
+        <Button
+            android:id="@+id/btn_publicar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="32dp"
+            android:text="@string/btn_publicar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/map"
+            app:layout_constraintTop_toBottomOf="@+id/map" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
