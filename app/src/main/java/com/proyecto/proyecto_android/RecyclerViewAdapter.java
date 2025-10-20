@@ -55,9 +55,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.tv_nombre_evento.setText(listaEventos.get(position).getNombre());
-        holder.tv_fecha_evento.append(" " + listaEventos.get(position).getFecha());
-        holder.tv_ciudad_evento.append(" " + listaEventos.get(position).getCiudad());
-        holder.tv_precio_evento.append(" $"+(listaEventos.get(position).getPrecio()));
+        holder.tv_fecha_evento.setText("Fecha: " + listaEventos.get(position).getFecha());
+        holder.tv_ciudad_evento.setText("Ciudad: " + listaEventos.get(position).getCiudad());
+        holder.tv_precio_evento.setText("Precio: $" + listaEventos.get(position).getPrecio());
+
         holder.iv_imagen_evento.setImageResource(listaEventos.get(position).getImagen());
 
 
@@ -96,6 +97,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public int getItemCount() {
         return listaEventos.size();
+    }
+
+    public void filtrarLista(ArrayList<Eventos> listaFiltrada) {
+        this.listaEventos = listaFiltrada;
+        notifyDataSetChanged();
     }
 
 
