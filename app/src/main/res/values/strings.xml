@@ -48,7 +48,7 @@
 
     <string name="crear_nombre_placeholder">Ingresar nombre del evento</string>
     <string name="crear_descripcion_placeholder">Ingresar descripcion del evento </string>
-    <string name="crear_artista_placeholder">Ingresar artista del evento </string>
+    <string name="crear_artista_placeholder">Nombre del artista</string>
     <string name="crear_aforo_placeholder">aforo maximo del evento </string>
     <string name="crear_coste_placeholder">$20.000 </string>
     <string name="crear_direccion_placeholder">ingresar direccion del evento </string>
@@ -64,5 +64,7 @@
     <string name="crear_localizacion">Seleccione la localizacion exacta donde se realizara el evento</string>
 
     <string name="btn_publicar">Publicar Evento</string>
+
+
 
 </resources>

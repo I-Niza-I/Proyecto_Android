@@ -70,6 +70,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 Bundle bundle = new Bundle();
 
                 bundle.putString("nombre", evento.getNombre());
+                bundle.putString("descripcion", evento.getDescripcion());
                 bundle.putString("artista", evento.getArtista());
                 bundle.putString("direccion", evento.getDireccion());
                 bundle.putString("fecha", evento.getFecha());

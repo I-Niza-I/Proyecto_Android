@@ -5,6 +5,7 @@ import com.google.android.gms.maps.model.LatLng;
 public class Eventos {
     private int imagen;
     private String nombre;
+    private String descripcion;
     private String artista;
     private String fecha;
     private String direccion;
@@ -13,8 +14,9 @@ public class Eventos {
     private Double latitud;
     private Double longitud;
 
-    public Eventos( int imagen, String nombre,  String artista, String fecha, String direccion, String ciudad, int precio, double latitud, double longitud) {
+    public Eventos( int imagen, String nombre, String descripcion,  String artista, String fecha, String direccion, String ciudad, int precio, double latitud, double longitud) {
 
+        this.descripcion = descripcion;
         this.imagen = imagen;
         this.nombre = nombre;
         this.artista = artista;
@@ -64,6 +66,14 @@ public class Eventos {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public String getFecha() {

@@ -29,10 +29,10 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
     private ActivityMapsBinding binding;
 
     private MyApplication myApplication;
-    private String nombre, artista, direccion, ciudad, fecha;
+    private String nombre, artista,descripcion, direccion, ciudad, fecha;
     private int imagen, precio;
     private Button botonAgregar;
-    private TextView txtNombre, txtArtista, txtDireccion, txtCiudad, txtFecha, txtPrecio;
+    private TextView txtNombre, txtArtista, txtDireccion, txtCiudad, txtFecha, txtPrecio, txtDescripcion;
     private ImageView imvFoto;
     private Double latitud;
     private Double longitud;
@@ -52,6 +52,7 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
         if (getArguments() != null) {
             nombre = getArguments().getString("nombre");
             artista = getArguments().getString("artista");
+            descripcion = getArguments().getString("descripcion");
             direccion = getArguments().getString("direccion");
             fecha = getArguments().getString("fecha");
             ciudad = getArguments().getString("ciudad");
@@ -64,6 +65,7 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
         botonAgregar = (Button) view.findViewById(R.id.btn_agregar_favoritos);
 
         // Inicializar vistas
+        txtDescripcion = view.findViewById(R.id.txtDescripcion);
         txtNombre = view.findViewById(R.id.txtNombre);
         txtArtista = view.findViewById(R.id.txtArtista);
         txtDireccion = view.findViewById(R.id.txtDireccion);
@@ -74,6 +76,7 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
 
         // Configurar datos
         txtNombre.setText(nombre);
+        txtDescripcion.setText(descripcion);
         txtArtista.setText(artista);
         txtDireccion.setText(direccion);
         txtCiudad.setText(ciudad);
@@ -81,18 +84,11 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
         txtPrecio.setText("$" + precio);
         imvFoto.setImageResource(imagen);
 
-        txtNombre.setText(nombre);
-        txtArtista.setText(artista);
-        txtDireccion.setText(direccion);
-        txtCiudad.setText(ciudad);
-        txtFecha.setText(fecha);
-        txtPrecio.setText("$"+precio);
-        imvFoto.setImageResource(imagen);
 
         botonAgregar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Eventos evento = new Eventos(imagen, nombre, artista, fecha, direccion, ciudad, precio, latitud, longitud);
+                Eventos evento = new Eventos(imagen, nombre, descripcion, artista, fecha, direccion, ciudad, precio, latitud, longitud);
                 if(myApplication.esFavorito(evento)){
                     Toast.makeText(requireContext(), "Este evento ya esta guardado en favoritos", Toast.LENGTH_SHORT).show();
                 }else{
@@ -117,7 +113,7 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
         mMap = googleMap;
         // Agrega el marcador, mueve la camara y hace zoom
         LatLng ubicacionEvento = new LatLng(latitud, longitud);
-        mMap.addMarker(new MarkerOptions().position(ubicacionEvento).title("Marcador de: "+direccion));
+        mMap.addMarker(new MarkerOptions().position(ubicacionEvento).title(direccion));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubicacionEvento, 15f), 2000, null);
     }
 }

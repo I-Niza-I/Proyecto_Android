@@ -53,6 +53,7 @@
             android:text="@string/titulo_crear_evento"
             android:textAlignment="center"
             android:textSize="30sp"
+            android:textColor="@color/purple"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.544"
@@ -67,12 +68,12 @@
             android:height="49dp"
             android:background="@drawable/forma_edit_text"
             android:ems="10"
-            android:textStyle="bold"
             android:hint="@string/crear_descripcion_placeholder"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="@+id/edt_nombre"
+            android:inputType="textMultiLine"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/edt_artista"
             app:layout_constraintHorizontal_bias="0.288"
-            app:layout_constraintStart_toStartOf="@+id/edt_nombre"
+            app:layout_constraintStart_toStartOf="@+id/txt_descripcion"
             app:layout_constraintTop_toBottomOf="@+id/txt_descripcion" />
 
         <TextView
@@ -93,11 +94,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="24dp"
+            android:text="@string/crear_descripcion"
             android:textSize="15sp"
             android:textStyle="bold"
-            android:text="@string/crear_descripcion"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edt_nombre" />
+            app:layout_constraintTop_toBottomOf="@+id/edt_artista" />
 
         <TextView
             android:id="@+id/txt_direccion"
@@ -200,9 +201,9 @@
             android:layout_width="0dp"
             android:layout_height="250dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="@+id/txt_localizacion"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/txt_localizacion"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_localizacion"
             tools:context=".MapsActivity" />
 
@@ -211,11 +212,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="40dp"
             android:text="@string/btn_publicar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/map"
             app:layout_constraintTop_toBottomOf="@+id/map" />
+
+        <TextView
+            android:id="@+id/txt_artista"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="@string/crear_artista"
+            app:layout_constraintStart_toStartOf="@+id/edt_nombre"
+            app:layout_constraintTop_toBottomOf="@+id/edt_nombre" />
+
+        <EditText
+            android:id="@+id/edt_artista"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:inputType="text"
+            android:background="@drawable/forma_edit_text"
+            android:hint="@string/crear_artista_placeholder"
+            app:layout_constraintEnd_toEndOf="@+id/edt_nombre"
+            app:layout_constraintStart_toStartOf="@+id/txt_artista"
+            app:layout_constraintTop_toBottomOf="@+id/txt_artista" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
