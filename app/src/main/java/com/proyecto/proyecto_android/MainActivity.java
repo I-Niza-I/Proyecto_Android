@@ -52,6 +52,14 @@ public class MainActivity extends AppCompatActivity {
         // Synchronize the toggle's state with the linked DrawerLayout
         toggle.syncState();
 
+        if (savedInstanceState == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new EventosMusicalesFragment())
+                    .commit();
+
+            navigationView.setCheckedItem(R.id.nav_eventos);
+        }
         // Set a listener for when an item in the NavigationView is selected
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 

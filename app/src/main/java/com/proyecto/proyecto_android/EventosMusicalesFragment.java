@@ -38,25 +38,11 @@ public class EventosMusicalesFragment extends Fragment {
         myApplication = (MyApplication) requireActivity().getApplication();
 
         listaEventos = myApplication.getEventosMusicales();
-
-        // Se define la variable declarada anteriormente haciendo referencia ->
-        // al recyclerview creado en el layout.
         recyclerView = (RecyclerView) view.findViewById(R.id.revEventosMusicales);
-
-        // Este metodo indica que el tamaño del RecyclerView no cambiara aunque se modifiquen los elementos.
         recyclerView.setHasFixedSize(true);
-
-        // define la variable layoutManager, en este caso define cómo se van a mostrar los ítems ->
-        // uno debajo de otro, osea una lista vertical.
         layoutManager = new LinearLayoutManager(requireContext());
-
-        // Asigna el LayoutManager creado al RecyclerView.
         recyclerView.setLayoutManager(layoutManager);
-
-        // Crea una instancia del adaptador personalizado, pasándole la lista de datos (listaEventos)
-        // y el contexto actual (this) para poder inflar layouts o acceder a recursos.
         myAdapter = new RecyclerViewAdapter(listaEventos, requireContext());
-        // Asigna el adaptador creado al RecyclerView.
         recyclerView.setAdapter(myAdapter);
 
         return view;
