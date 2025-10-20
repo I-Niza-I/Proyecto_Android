@@ -131,15 +131,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-            // Called when the back button is pressed.
             @Override
             public void handleOnBackPressed() {
-                // Check if the drawer is open
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    // Close the drawer if it's open
                     drawerLayout.closeDrawer(GravityCompat.START);
                 } else {
-                    // Finish the activity if the drawer is closed
                     finish();
                 }
             }

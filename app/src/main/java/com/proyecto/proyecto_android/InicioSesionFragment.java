@@ -3,6 +3,8 @@ package com.proyecto.proyecto_android;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,12 +48,23 @@ public class InicioSesionFragment extends Fragment {
                     cuentaRecorrida = listaCuentas.get(i);
                     if(cuentaRecorrida.getRutEmpresa().equals(rut) && cuentaRecorrida.getPassword().equals(password)) {
                         cuentaObtenida = cuentaRecorrida;
+                        break;
                     }
                 }
                 if(cuentaObtenida != null){
                     myApplication.iniciarSesion(cuentaObtenida);
                     ((MainActivity) requireActivity()).actualizarMenuDrawer();
-                    Toast.makeText(requireContext(), "Iniciando sesion", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Sesion iniciada correctamente", Toast.LENGTH_SHORT).show();
+
+                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                    EventosMusicalesFragment eventosMusicalesFragment = new EventosMusicalesFragment();
+                    fragmentTransaction.replace(R.id.fragment_container, eventosMusicalesFragment);
+
+                    fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                    fragmentTransaction.commit();
                 }else{
                     Toast.makeText(requireContext(), "La cuenta no existe\nInicio de sesion rechazado", Toast.LENGTH_SHORT).show();
                 }

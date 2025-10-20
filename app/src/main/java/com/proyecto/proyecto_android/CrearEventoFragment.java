@@ -1,5 +1,6 @@
 package com.proyecto.proyecto_android;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.proyecto.proyecto_android.databinding.ActivityMapsBinding;
 
+import java.util.Calendar;
+import java.util.Locale;
+
 public class CrearEventoFragment extends Fragment implements OnMapReadyCallback {
 
 
@@ -33,6 +37,7 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
     private LatLng ubicacionSeleccionada;
     private MarkerOptions marcadorPuesto;
     private Button btn_publicar;
+    private Calendar fechaSeleccionada;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +59,14 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
         precio = (EditText) view.findViewById(R.id.edt_coste);
 
         ciudad = (Spinner) view.findViewById(R.id.spn_ciudades);
+
+        fecha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarDialogoSelectorFecha();
+            }
+        });
+
         btn_publicar = (Button) view.findViewById(R.id.btn_publicar);
 
         btn_publicar.setOnClickListener(new View.OnClickListener() {
@@ -77,11 +90,23 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
                 double latitud = ubicacionSeleccionada.latitude;
                 double longitud = ubicacionSeleccionada.longitude;
 
-                // Validar campos obligatorios
+                // Validar campos vacios
                 if (nombreEvento.isEmpty() || descripcionEvento.isEmpty() || direccionEvento.isEmpty() ||
                     fechaEvento.isEmpty() || ciudadEvento.isEmpty() || artistaEvento.isEmpty() || precio.getText().toString().isEmpty()) {
 
                     Toast.makeText(getContext(), "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Calendar hoy = Calendar.getInstance();
+                // Normalizar 'hoy' para comparar solo día, mes y año, no la hora.
+                hoy.set(Calendar.HOUR_OF_DAY, 0);
+                hoy.set(Calendar.MINUTE, 0);
+                hoy.set(Calendar.SECOND, 0);
+                hoy.set(Calendar.MILLISECOND, 0);
+
+                if (fechaSeleccionada == null || fechaSeleccionada.before(hoy)) {
+                    Toast.makeText(getContext(), "La fecha del evento no puede ser anterior al día de hoy.", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -174,10 +199,40 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
         precio.setText("");
         mMap.clear();
 
+        fechaSeleccionada = null;
+
         // Restablece la ubicación inicial del mapa
         LatLng ubicacionInicial = new LatLng(-29.958288, -71.339126);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubicacionInicial, 10f));
         ubicacionSeleccionada = null;
+    }
+
+    private void mostrarDialogoSelectorFecha() {
+        // Obtener la fecha actual para mostrarla por defecto en el DatePicker
+        Calendar calendario = Calendar.getInstance();
+        int anio = calendario.get(Calendar.YEAR);
+        int mes = calendario.get(Calendar.MONTH);
+        int dia = calendario.get(Calendar.DAY_OF_MONTH);
+
+        // Crear una instancia de DatePickerDialog
+        DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), (view, year, monthOfYear, dayOfMonth) -> {
+            String fechaFormateada = String.format(Locale.getDefault(), "%02d/%02d/%d", dayOfMonth, monthOfYear + 1, year);
+
+            fechaSeleccionada = Calendar.getInstance();
+            fechaSeleccionada.set(year, monthOfYear, dayOfMonth);
+
+            fechaSeleccionada.set(Calendar.HOUR_OF_DAY, 0);
+            fechaSeleccionada.set(Calendar.MINUTE, 0);
+            fechaSeleccionada.set(Calendar.SECOND, 0);
+            fechaSeleccionada.set(Calendar.MILLISECOND, 0);
+
+            fecha.setText(fechaFormateada);
+        },
+        anio, mes, dia);
+
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+
+        datePickerDialog.show();
     }
 
 }

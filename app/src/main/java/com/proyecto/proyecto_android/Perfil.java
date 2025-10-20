@@ -7,49 +7,59 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Perfil#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class Perfil extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public Perfil() {
-        // Required empty public constructor
-    }
-
-    public static Perfil newInstance(String param1, String param2) {
-        Perfil fragment = new Perfil();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    private MyApplication myApplication;
+    private TextView txt_Nombre, txt_Descripcion, txt_Correo;
+    private ImageView imgLogo;
+    private Button btnModificar;
+    private Organizacion cuentaLogueada;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_perfil, container, false);
+        View view = inflater.inflate(R.layout.fragment_perfil, container, false);
+
+        myApplication = (MyApplication) requireActivity().getApplication();
+
+        txt_Nombre = view.findViewById(R.id.txt_nombre);
+        txt_Descripcion = view.findViewById(R.id.txt_descripcion);
+        txt_Correo = view.findViewById(R.id.txt_correo);
+        btnModificar = view.findViewById(R.id.btn_modificar);
+
+        cargarDatosPerfil();
+
+        // (Opcional) Funcionalidad para el botón de modificar
+        btnModificar.setOnClickListener(v -> {
+            // Aquí puedes navegar a otro fragmento para editar el perfil
+            // o cambiar los TextViews por EditTexts para permitir la edición
+            Toast.makeText(getContext(), "Funcionalidad de modificar no implementada.", Toast.LENGTH_SHORT).show();
+        });
+
+
+        return view;
+    }
+
+    private void cargarDatosPerfil() {
+        // ✅ Obtener la cuenta que ha iniciado sesión desde MyApplication
+        cuentaLogueada = myApplication.getCuentaLogueada();
+
+        if (cuentaLogueada != null) {
+            txt_Nombre.setText(cuentaLogueada.getNombre());
+            txt_Descripcion.setText(cuentaLogueada.getDescripcion());
+            txt_Correo.setText(cuentaLogueada.getCorreo());
+        } else {
+            txt_Nombre.setText("Sin sesión iniciada");
+            txt_Descripcion.setText("Inicia sesión para ver tu perfil.");
+            txt_Correo.setText("");
+            Toast.makeText(getContext(), "Por favor, inicia sesión.", Toast.LENGTH_LONG).show();
+        }
     }
 }

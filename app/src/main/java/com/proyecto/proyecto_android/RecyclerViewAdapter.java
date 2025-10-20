@@ -27,6 +27,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     ArrayList<Eventos> listaEventos;
     Context contexto;
     MyApplication myApplication;
+    private boolean esDesdeFavoritosOHistorial;
+
     // Metodo que recibe la lista de datos y el contexto desde la Activity donde se usa el RecyclerView.
     public RecyclerViewAdapter(ArrayList<Eventos> listaEventos, Context contexto) {
         this.listaEventos = listaEventos;
