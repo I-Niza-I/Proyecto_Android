@@ -7,10 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,21 +26,14 @@ import java.util.Arrays;
 
 public class EventosMusicalesFragment extends Fragment {
 
-    // Declaracion del atributo de tipo RecyclerView
     private RecyclerView recyclerView;
-
-    // Creacion del adaptador: Este actua como un "puente" entre los datos y lo visual
-    // toma los datos y los convierte en vistas
     private RecyclerViewAdapter myAdapter;
-
-    // Creacion del gestor del layout: Organiza los items en el layout
     private RecyclerView.LayoutManager layoutManager;
-
     MyApplication myApplication;
-
     private ArrayList<Eventos> listaEventos;
-
     EditText edt_buscar;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,7 +43,10 @@ public class EventosMusicalesFragment extends Fragment {
 
         myApplication = (MyApplication) requireActivity().getApplication();
 
-        listaEventos = myApplication.getEventosMusicales();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("Evento");
+
+        listaEventos = new ArrayList<>();
 
         edt_buscar = view.findViewById(R.id.edtBusqueda);
         recyclerView = (RecyclerView) view.findViewById(R.id.revEventosMusicales);
@@ -54,10 +58,12 @@ public class EventosMusicalesFragment extends Fragment {
         myAdapter = new RecyclerViewAdapter(listaEventos, requireContext());
         recyclerView.setAdapter(myAdapter);
 
+        rellenarLista();
+
         edt_buscar.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                filtrar(s.toString());
+                filtrar(s.toString().trim());
             }
 
             @Override
@@ -85,6 +91,30 @@ public class EventosMusicalesFragment extends Fragment {
         }
         // Actualiza el adaptador con la nueva lista filtrada
         myAdapter.filtrarLista(listaFiltrada);
+    }
+
+    private void rellenarLista() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listaEventos.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    String eventoId = dataSnapshot.getKey();
+
+                    Eventos evento = dataSnapshot.getValue(Eventos.class);
+
+                    if (evento != null && eventoId != null) {
+                        evento.setId(eventoId);
+                        listaEventos.add(evento);
+                    }
+                }
+                myAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(requireContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

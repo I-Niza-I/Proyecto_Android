@@ -20,6 +20,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.proyecto.proyecto_android.databinding.ActivityMapsBinding;
 
 import java.util.Calendar;
@@ -38,11 +40,13 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
     private MarkerOptions marcadorPuesto;
     private Button btn_publicar;
     private Calendar fechaSeleccionada;
+    private FirebaseDatabase firebaseDatabase;
+
+    private DatabaseReference databaseReference;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_crear_evento, container, false);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -50,6 +54,8 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
 
         myApplication = (MyApplication) getActivity().getApplication();
 
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("Evento");
 
         nombre = (EditText) view.findViewById(R.id.edt_nombre);
         artista = (EditText) view.findViewById(R.id.edt_artista);
@@ -76,52 +82,39 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
                     Toast.makeText(getContext(), "Por favor, selecciona una ubicación en el mapa", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 int costeEvento = 0;
                 // Obtener los datos del formulario
-                String nombreEvento = nombre.getText().toString();
-                String artistaEvento = artista.getText().toString();
-                String descripcionEvento = descripcion.getText().toString();
-                String direccionEvento = direccion.getText().toString();
-                String fechaEvento = fecha.getText().toString();
-                String costeEventoString = precio.getText().toString();
-                String ciudadEvento = ciudad.getSelectedItem().toString();
+                String nombreEvento = nombre.getText().toString().trim();
+                String artistaEvento = artista.getText().toString().trim();
+                String descripcionEvento = descripcion.getText().toString().trim();
+                String direccionEvento = direccion.getText().toString().trim();
+                String fechaEvento = fecha.getText().toString().trim();
+                String costeEventoString = precio.getText().toString().trim();
+                String ciudadEvento = ciudad.getSelectedItem().toString().trim();
 
                 // Obtener latitud y longitud
                 double latitud = ubicacionSeleccionada.latitude;
                 double longitud = ubicacionSeleccionada.longitude;
 
-                // Validar campos vacios
-                if (nombreEvento.isEmpty() || descripcionEvento.isEmpty() || direccionEvento.isEmpty() ||
-                    fechaEvento.isEmpty() || ciudadEvento.isEmpty() || artistaEvento.isEmpty() || precio.getText().toString().isEmpty()) {
-
-                    Toast.makeText(getContext(), "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
+                if (!validarCampos(nombreEvento, artistaEvento, descripcionEvento, direccionEvento, fechaEvento, costeEventoString, ciudadEvento)) {
                     return;
                 }
 
-                Calendar hoy = Calendar.getInstance();
-                // Normalizar 'hoy' para comparar solo día, mes y año, no la hora.
-                hoy.set(Calendar.HOUR_OF_DAY, 0);
-                hoy.set(Calendar.MINUTE, 0);
-                hoy.set(Calendar.SECOND, 0);
-                hoy.set(Calendar.MILLISECOND, 0);
-
-                if (fechaSeleccionada == null || fechaSeleccionada.before(hoy)) {
-                    Toast.makeText(getContext(), "La fecha del evento no puede ser anterior al día de hoy.", Toast.LENGTH_LONG).show();
+                if (!validarFecha()) {
                     return;
                 }
 
                 try {
                     costeEvento = Integer.parseInt(costeEventoString);
+                    if(costeEvento < 0){
+                        Toast.makeText(getContext(), "Introduce un precio valido", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 } catch (NumberFormatException e) {
                     Toast.makeText(getContext(), "Introduce un precio valido", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                if(costeEvento < 0){
-                    Toast.makeText(getContext(), "Introduce un precio valido", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
 
                 // Crear el objeto Evento
                 Eventos nuevoEvento = new Eventos(
@@ -137,16 +130,14 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
                         longitud
                 );
 
-                boolean fueAgregado = myApplication.agregarEvento(nuevoEvento);
-
-                if (fueAgregado) {
-                    Toast.makeText(getContext(), "Evento publicado con éxito", Toast.LENGTH_LONG).show();
-                    limpiar();
-
-                } else {
-                    Toast.makeText(getContext(), "Ya existe un evento con este nombre", Toast.LENGTH_LONG).show();
-                }
-
+                String id = databaseReference.push().getKey();
+                databaseReference.child(id).setValue(nuevoEvento)
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(requireContext(), "Evento agregado", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e ->
+                                Toast.makeText(requireContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                        );
             }
         });
 
@@ -210,7 +201,7 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
     private void mostrarDialogoSelectorFecha() {
         // Obtener la fecha actual para mostrarla por defecto en el DatePicker
         Calendar calendario = Calendar.getInstance();
-        int anio = calendario.get(Calendar.YEAR);
+        int ano = calendario.get(Calendar.YEAR);
         int mes = calendario.get(Calendar.MONTH);
         int dia = calendario.get(Calendar.DAY_OF_MONTH);
 
@@ -228,11 +219,48 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
 
             fecha.setText(fechaFormateada);
         },
-        anio, mes, dia);
+        ano, mes, dia);
 
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
 
         datePickerDialog.show();
+    }
+
+    private boolean validarUbicacion() {
+        if (ubicacionSeleccionada == null) {
+            Toast.makeText(getContext(), "Por favor, selecciona una ubicación en el mapa", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validarCampos(String... campos) {
+        for (String campo : campos) {
+            if (campo.trim().isEmpty()) {
+                Toast.makeText(getContext(), "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean validarFecha() {
+        if (fechaSeleccionada == null) {
+            Toast.makeText(getContext(), "Por favor, selecciona una fecha.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        Calendar hoy = Calendar.getInstance();
+        hoy.set(Calendar.HOUR_OF_DAY, 0);
+        hoy.set(Calendar.MINUTE, 0);
+        hoy.set(Calendar.SECOND, 0);
+        hoy.set(Calendar.MILLISECOND, 0);
+
+        if (fechaSeleccionada.before(hoy)) {
+            Toast.makeText(getContext(), "La fecha del evento no puede ser anterior al día de hoy.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
     }
 
 }
