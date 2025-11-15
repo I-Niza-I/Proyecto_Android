@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 
 public class FavoritosFragment extends Fragment {
 
@@ -26,6 +29,8 @@ public class FavoritosFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     MyApplication myApplication;
     ArrayList<Eventos> listaFavoritos;
+
+    private DBHelper Helper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
