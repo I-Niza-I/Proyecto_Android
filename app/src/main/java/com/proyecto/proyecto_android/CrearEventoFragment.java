@@ -34,7 +34,7 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
     private ActivityMapsBinding binding;
     private MyApplication myApplication;
 
-    private EditText nombre, descripcion, direccion, fecha, precio, artista;
+    private EditText nombre, descripcion, direccion, fecha, precio, artista, urlImagen;
     private Spinner ciudad;
     private LatLng ubicacionSeleccionada;
     private MarkerOptions marcadorPuesto;
@@ -57,6 +57,7 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Evento");
 
+        urlImagen = (EditText) view.findViewById(R.id.edt_urlImagen);
         nombre = (EditText) view.findViewById(R.id.edt_nombre);
         artista = (EditText) view.findViewById(R.id.edt_artista);
         descripcion = (EditText) view.findViewById(R.id.edt_descripcion);
@@ -92,12 +93,14 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
                 String fechaEvento = fecha.getText().toString().trim();
                 String costeEventoString = precio.getText().toString().trim();
                 String ciudadEvento = ciudad.getSelectedItem().toString().trim();
+                String urlImagenEvento = urlImagen.getText().toString().trim();
+
 
                 // Obtener latitud y longitud
                 double latitud = ubicacionSeleccionada.latitude;
                 double longitud = ubicacionSeleccionada.longitude;
 
-                if (!validarCampos(nombreEvento, artistaEvento, descripcionEvento, direccionEvento, fechaEvento, costeEventoString, ciudadEvento)) {
+                if (!validarCampos(nombreEvento, artistaEvento, descripcionEvento, direccionEvento, fechaEvento, costeEventoString, ciudadEvento, urlImagenEvento)) {
                     return;
                 }
 
@@ -118,7 +121,7 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
 
                 // Crear el objeto Evento
                 Eventos nuevoEvento = new Eventos(
-                        R.drawable.place_holder,
+                        urlImagenEvento,
                         nombreEvento,
                         descripcionEvento,
                         artistaEvento,

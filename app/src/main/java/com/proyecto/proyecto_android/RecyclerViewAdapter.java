@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -60,12 +61,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      // aca se vinculan los datos de la lista (listaEventos) con los componentes visuales del layout.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        Eventos eventoActual = listaEventos.get(position);
+
         holder.tv_nombre_evento.setText(listaEventos.get(position).getNombre());
         holder.tv_fecha_evento.setText("Fecha: " + listaEventos.get(position).getFecha());
         holder.tv_ciudad_evento.setText("Ciudad: " + listaEventos.get(position).getCiudad());
         holder.tv_precio_evento.setText("Precio: $" + listaEventos.get(position).getPrecio());
 
-        holder.iv_imagen_evento.setImageResource(listaEventos.get(position).getImagen());
+        Glide.with(contexto)
+                .load(eventoActual.getUrlImagen()) // Usamos la URL del objeto Evento
+                .placeholder(R.drawable.place_holder) // Imagen mientras carga
+                .error(R.drawable.place_holder)       // Imagen si hay un error
+                .into(holder.iv_imagen_evento);
 
 
         holder.cv_tarjeta.setOnClickListener(new View.OnClickListener(){
@@ -85,7 +92,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 bundle.putString("fecha", evento.getFecha());
                 bundle.putString("ciudad", evento.getCiudad());
                 bundle.putInt("precio", evento.getPrecio());
-                bundle.putInt("imagen", evento.getImagen());
+                bundle.putString("urlImagen", evento.getUrlImagen());
                 bundle.putDouble("latitud", evento.getLatitud());
                 bundle.putDouble("longitud", evento.getLongitud());
 

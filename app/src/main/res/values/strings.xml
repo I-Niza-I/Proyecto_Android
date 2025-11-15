@@ -52,6 +52,7 @@
     <string name="crear_aforo_placeholder">aforo maximo del evento </string>
     <string name="crear_coste_placeholder">$20.000 </string>
     <string name="crear_direccion_placeholder">ingresar direccion del evento </string>
+    <string name="crear_urlImagen_placeholder">Que void</string>
 
     <string name="crear_nombre">Nombre del evento</string>
     <string name="crear_descripcion">Descripcion del evento</string>
@@ -62,6 +63,7 @@
     <string name="crear_fecha">Fecha del evento </string>
     <string name="crear_ciudad">Ciudad del evento </string>
     <string name="crear_localizacion">Seleccione la localizacion exacta donde se realizara el evento</string>
+    <string name="crear_urlImagen">Ingrese la url de la imagen del evento</string>
 
     <string name="btn_publicar">Publicar Evento</string>
 

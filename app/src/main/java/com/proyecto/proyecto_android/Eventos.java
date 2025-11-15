@@ -7,7 +7,6 @@ public class Eventos {
     @Exclude // Evita que Firebase guarde este campo en el objeto, ya que es la clave principal.
     private String id;
     private String urlImagen;
-    private int imagen;
     private String nombre;
     private String descripcion;
     private String artista;
@@ -20,20 +19,6 @@ public class Eventos {
 
     public Eventos() {}
 
-    public Eventos( int imagen, String nombre, String descripcion,  String artista, String fecha, String direccion, String ciudad, int precio, double latitud, double longitud) {
-
-        this.descripcion = descripcion;
-        this.imagen = imagen;
-        this.nombre = nombre;
-        this.artista = artista;
-        this.fecha = fecha;
-        this.direccion = direccion;
-        this.ciudad = ciudad;
-        this.precio = precio;
-        this.latitud = latitud;
-        this.longitud = longitud;
-    }
-
     public Eventos(String urlImagen, String nombre, String descripcion, String artista, String fecha, String direccion, String ciudad, int precio, Double latitud, Double longitud) {
         this.urlImagen = urlImagen;
         this.nombre = nombre;
@@ -45,6 +30,14 @@ public class Eventos {
         this.precio = precio;
         this.latitud = latitud;
         this.longitud = longitud;
+    }
+
+    public String getUrlImagen() {
+        return urlImagen;
+    }
+
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
     }
 
     public Double getLatitud() {
@@ -61,14 +54,6 @@ public class Eventos {
 
     public void setLongitud(Double longitud) {
         this.longitud = longitud;
-    }
-
-    public int getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(int imagen) {
-        this.imagen = imagen;
     }
 
     public String getArtista() {
@@ -139,11 +124,17 @@ public class Eventos {
     @Override
     public String toString() {
         return "Eventos{" +
+                "id='" + id + '\'' +
+                ", urlImagen='" + urlImagen + '\'' +
                 ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", artista='" + artista + '\'' +
                 ", fecha='" + fecha + '\'' +
                 ", direccion='" + direccion + '\'' +
                 ", ciudad='" + ciudad + '\'' +
                 ", precio=" + precio +
+                ", latitud=" + latitud +
+                ", longitud=" + longitud +
                 '}';
     }
 }

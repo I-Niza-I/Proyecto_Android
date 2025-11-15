@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -31,6 +32,7 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
     private MyApplication myApplication;
     private String nombre, artista,descripcion, direccion, ciudad, fecha;
     private int imagen, precio;
+    private String urlImagen;
     private Button botonAgregar;
     private TextView txtNombre, txtArtista, txtDireccion, txtCiudad, txtFecha, txtPrecio, txtDescripcion;
     private ImageView imvFoto;
@@ -57,7 +59,7 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
             fecha = getArguments().getString("fecha");
             ciudad = getArguments().getString("ciudad");
             precio = getArguments().getInt("precio", 0);
-            imagen = getArguments().getInt("imagen", 0);
+            urlImagen = getArguments().getString("urlImagen");
             latitud = getArguments().getDouble("latitud", 0);
             longitud = getArguments().getDouble("longitud", 0);
         }
@@ -82,7 +84,11 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
         txtCiudad.setText(ciudad);
         txtFecha.setText(fecha);
         txtPrecio.setText("$" + precio);
-        imvFoto.setImageResource(imagen);
+        Glide.with(requireContext())
+                .load(urlImagen)
+                .placeholder(R.drawable.place_holder) // Muestra una imagen de carga
+                .error(R.drawable.place_holder)       // Muestra una imagen si hay error
+                .into(imvFoto);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -96,7 +102,7 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
         botonAgregar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Eventos eventoActual = new Eventos(imagen, nombre, descripcion, artista, fecha, direccion, ciudad, precio, latitud, longitud);
+                Eventos eventoActual = new Eventos(urlImagen, nombre, descripcion, artista, fecha, direccion, ciudad, precio, latitud, longitud);
                 if (yaEsFavorito) {
                     myApplication.removerFavorito(eventoActual);
                     Toast.makeText(requireContext(), "Evento eliminado de Favoritos", Toast.LENGTH_SHORT).show();

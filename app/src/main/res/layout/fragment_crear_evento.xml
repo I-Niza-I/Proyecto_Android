@@ -214,12 +214,11 @@
             android:id="@+id/btn_publicar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginTop="32dp"
             android:text="@string/btn_publicar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/map"
-            app:layout_constraintTop_toBottomOf="@+id/map" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edt_urlImagen" />
 
         <TextView
             android:id="@+id/txt_artista"
@@ -244,6 +243,31 @@
             app:layout_constraintEnd_toEndOf="@+id/edt_nombre"
             app:layout_constraintStart_toStartOf="@+id/txt_artista"
             app:layout_constraintTop_toBottomOf="@+id/txt_artista" />
+
+        <TextView
+            android:id="@+id/txt_urlImagen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/crear_urlImagen"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/txt_localizacion"
+            app:layout_constraintTop_toBottomOf="@+id/map" />
+
+        <EditText
+            android:id="@+id/edt_urlImagen"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/forma_edit_text"
+            android:ems="10"
+            android:inputType="text"
+            android:text="@string/crear_urlImagen_placeholder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/txt_urlImagen"
+            app:layout_constraintTop_toBottomOf="@+id/txt_urlImagen" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
