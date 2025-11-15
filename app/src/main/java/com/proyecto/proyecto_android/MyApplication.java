@@ -2,6 +2,8 @@ package com.proyecto.proyecto_android;
 
 import android.app.AlertDialog;
 import android.app.Application;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class MyApplication extends Application {
         instance = this;
         rellenarEventos();
         rellenarOrganizacion();
+        cargarFavoritosDesdeBD();
     }
 
     public void rellenarEventos(){
@@ -51,8 +54,26 @@ public class MyApplication extends Application {
         }
     }
 
-    public void removerFavorito(Eventos evento) {
-        eventosFavoritos.remove(evento);
+    public boolean removerFavorito(Eventos evento) {
+        DBHelper dbHelper = new DBHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        String selection = "Nombre = ? AND Artista = ?";
+        String[] selectionArgs = { evento.getNombre(), evento.getArtista() };
+
+        int deletedRows = db.delete("Favoritos", selection, selectionArgs);
+
+        db.close();
+
+        if (deletedRows > 0) {
+            eventosFavoritos.remove(evento);
+            Toast.makeText(this, "Eliminado de favoritos", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        else {
+            Toast.makeText(this, "Error al eliminar de la base de datos", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
     public void agregarAlHistorial(Eventos evento) {
@@ -112,6 +133,44 @@ public class MyApplication extends Application {
         }
         return eventosFavoritos.contains(evento);
     }
+    private void cargarFavoritosDesdeBD() {
+        eventosFavoritos.clear();
+        DBHelper dbHelper = new DBHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.query("Favoritos", null, null, null, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String nombre = cursor.getString(cursor.getColumnIndexOrThrow("Nombre"));
+                String artista = cursor.getString(cursor.getColumnIndexOrThrow("Artista"));
+                String direccion = cursor.getString(cursor.getColumnIndexOrThrow("Direccion"));
+                String ciudad = cursor.getString(cursor.getColumnIndexOrThrow("Ciudad"));
+                String fecha = cursor.getString(cursor.getColumnIndexOrThrow("Fecha"));
+                int precio = cursor.getInt(cursor.getColumnIndexOrThrow("Precio"));
+                int imagen = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("Imagen")));
+
+                Eventos evento = buscarEventoEnLista(nombre, artista);
+                if (evento == null) {
+                    evento = new Eventos(imagen, nombre, "", artista, fecha, direccion, ciudad, precio, 0.0, 0.0);
+                }
+
+                eventosFavoritos.add(evento);
+
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        db.close();
+    }
+    private Eventos buscarEventoEnLista(String nombre, String artista) {
+        for (Eventos evento : listaEventos) {
+            if (evento.getNombre().equals(nombre) && evento.getArtista().equals(artista)) {
+                return evento;
+            }
+        }
+        return null;
+    }
+
 
     public boolean isSesionActiva() {
         return cuentaLogueada != null;

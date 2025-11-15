@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
-    private static final String DB_NAME = "ejemplo.db";
+    private static final String DB_NAME = "Favoritos.db";
     private static final int DB_SCHEME_VERSION = 1;
 
     public DBHelper(Context context) {
@@ -15,7 +15,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table Favoritos(Id int primary key not null, " +
                 "Nombre text not null, Artista text not null, Direccion text not null," +
-                "Ciudad text not null, Fecha text not null, Precio int not null) ");
+                "Ciudad text not null, Fecha text not null, Precio int not null , Imagen text not null) ");
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
