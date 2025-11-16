@@ -13,9 +13,18 @@ public class DBHelper extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table Favoritos(Id int primary key not null, " +
-                "Nombre text not null, Artista text not null, Direccion text not null," +
-                "Ciudad text not null, Fecha text not null, Precio int not null , Imagen text not null) ");
+        db.execSQL("CREATE TABLE Favoritos(" +
+                "Id TEXT PRIMARY KEY NOT NULL, " + // Mejor usar el ID de Firebase como clave
+                "Nombre TEXT NOT NULL, " +
+                "Artista TEXT NOT NULL, " +
+                "Descripcion TEXT, " +             // Es buena idea guardar la descripción
+                "Direccion TEXT NOT NULL, " +
+                "Ciudad TEXT NOT NULL, " +
+                "Fecha TEXT NOT NULL, " +
+                "Precio INTEGER NOT NULL, " +
+                "urlImagen TEXT, " +               // Columna con el nombre correcto
+                "Latitud REAL, " +                 // Columna para latitud
+                "Longitud REAL)");
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

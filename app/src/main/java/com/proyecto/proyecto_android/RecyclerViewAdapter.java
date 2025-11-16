@@ -85,6 +85,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 DetalleEventoFragment fragment = new DetalleEventoFragment();
                 Bundle bundle = new Bundle();
 
+                bundle.putString("id", evento.getId());
                 bundle.putString("nombre", evento.getNombre());
                 bundle.putString("descripcion", evento.getDescripcion());
                 bundle.putString("artista", evento.getArtista());

@@ -1,5 +1,7 @@
 package com.proyecto.proyecto_android;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,13 +32,16 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
     private ActivityMapsBinding binding;
 
     private MyApplication myApplication;
-    private String nombre, artista,descripcion, direccion, ciudad, fecha;
-    private int imagen, precio;
+    private String id, nombre, artista,descripcion, direccion, ciudad, fecha, urlImagen;
+    private int precio;
     private Button botonAgregar;
     private TextView txtNombre, txtArtista, txtDireccion, txtCiudad, txtFecha, txtPrecio, txtDescripcion;
     private ImageView imvFoto;
     private Double latitud, longitud;
     private boolean yaEsFavorito = false;
+
+    private SQLiteDatabase db;
+    private DBHelper Helper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +56,7 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
         myApplication = (MyApplication) requireActivity().getApplication();
 
         if (getArguments() != null) {
+            id = getArguments().getString("id");
             nombre = getArguments().getString("nombre");
             artista = getArguments().getString("artista");
             descripcion = getArguments().getString("descripcion");
@@ -57,10 +64,11 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
             fecha = getArguments().getString("fecha");
             ciudad = getArguments().getString("ciudad");
             precio = getArguments().getInt("precio", 0);
-            imagen = getArguments().getInt("imagen", 0);
+            urlImagen = getArguments().getString("urlImagen");
             latitud = getArguments().getDouble("latitud", 0);
             longitud = getArguments().getDouble("longitud", 0);
         }
+
 
         botonAgregar = (Button) view.findViewById(R.id.btn_agregar_favoritos);
 
@@ -82,7 +90,11 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
         txtCiudad.setText(ciudad);
         txtFecha.setText(fecha);
         txtPrecio.setText("$" + precio);
-        imvFoto.setImageResource(imagen);
+        Glide.with(requireContext())
+                .load(urlImagen)
+                .placeholder(R.drawable.place_holder) // Muestra una imagen de carga
+                .error(R.drawable.place_holder)       // Muestra una imagen si hay error
+                .into(imvFoto);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -96,20 +108,47 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
         botonAgregar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Eventos eventoActual = new Eventos(imagen, nombre, descripcion, artista, fecha, direccion, ciudad, precio, latitud, longitud);
+                Eventos eventoActual = new Eventos(urlImagen, nombre, descripcion, artista, fecha, direccion, ciudad, precio, latitud, longitud);
+                eventoActual.setId(id);
+
+                Helper = new DBHelper(requireContext());
+                db = Helper.getWritableDatabase();
+
                 if (yaEsFavorito) {
-                    myApplication.removerFavorito(eventoActual);
-                    Toast.makeText(requireContext(), "Evento eliminado de Favoritos", Toast.LENGTH_SHORT).show();
+                    boolean fueEliminado = myApplication.removerFavorito(eventoActual);
 
-                    botonAgregar.setText("Agregar a Favoritos");
-                    yaEsFavorito = false;
+                    if (fueEliminado) {
 
+                        botonAgregar.setText("Agregar a Favoritos");
+                        yaEsFavorito = false;
+
+                    }
                 } else {
-                    myApplication.agregarFavorito(eventoActual);
+                    // Insertar en BD
+                    ContentValues cv = new ContentValues();
+                    cv.put("Id", eventoActual.getId());
+                    cv.put("Nombre", eventoActual.getNombre());
+                    cv.put("Artista", eventoActual.getArtista());
+                    cv.put("Descripcion", eventoActual.getDescripcion());
+                    cv.put("Direccion", eventoActual.getDireccion());
+                    cv.put("Ciudad", eventoActual.getCiudad());
+                    cv.put("Fecha", eventoActual.getFecha());
+                    cv.put("Precio", eventoActual.getPrecio());
+                    cv.put("urlImagen", eventoActual.getUrlImagen());
+                    cv.put("Latitud", eventoActual.getLatitud());
+                    cv.put("Longitud", eventoActual.getLongitud());
 
-                    botonAgregar.setText("Eliminar de Favoritos");
-                    yaEsFavorito = true;
+                    long linea = db.insert("Favoritos", null, cv);
+                    if (linea != -1) {
+                        myApplication.agregarFavorito(eventoActual);
+                        Toast.makeText(requireContext(), "Guardado en favoritos", Toast.LENGTH_SHORT).show();
+                        botonAgregar.setText("Eliminar de Favoritos");
+                        yaEsFavorito = true;
+                    } else {
+                        Toast.makeText(requireContext(), "Ya estÃ¡ en favoritos", Toast.LENGTH_SHORT).show();
+                    }
                 }
+                db.close();
             }
         });
         return view;

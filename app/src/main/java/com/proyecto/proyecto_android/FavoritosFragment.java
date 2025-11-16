@@ -63,4 +63,14 @@ public class FavoritosFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (myAdapter != null && myApplication != null) {
+            ArrayList<Eventos> listaActualizada = myApplication.getEventosFavoritos();
+            myAdapter.filtrarLista(listaActualizada);
+            // myAdapter.notifyDataSetChanged();
+        }
+    }
 }
