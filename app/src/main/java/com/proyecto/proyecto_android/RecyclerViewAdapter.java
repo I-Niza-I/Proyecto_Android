@@ -86,6 +86,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 Bundle bundle = new Bundle();
 
                 bundle.putString("id", evento.getId());
+                bundle.putString("rutOrganizacion", evento.getRutOrganizacion()); // <-- LÍNEA IMPORTANTE
                 bundle.putString("nombre", evento.getNombre());
                 bundle.putString("descripcion", evento.getDescripcion());
                 bundle.putString("artista", evento.getArtista());
@@ -96,6 +97,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 bundle.putString("urlImagen", evento.getUrlImagen());
                 bundle.putDouble("latitud", evento.getLatitud());
                 bundle.putDouble("longitud", evento.getLongitud());
+
 
                 if (esDesdeFavoritosOHistorial || myApplication.esFavorito(evento)) {
                     bundle.putBoolean("esFavorito", true);

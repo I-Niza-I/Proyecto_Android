@@ -84,6 +84,13 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
                     return;
                 }
 
+                Organizacion cuentaLogueada = myApplication.getCuentaLogueada();
+
+                if (cuentaLogueada == null) {
+                    Toast.makeText(getContext(), "Error: Debes iniciar sesión para crear un evento.", Toast.LENGTH_LONG).show();
+                    return; // No permitir crear si no hay sesión
+                }
+
                 int costeEvento = 0;
                 // Obtener los datos del formulario
                 String nombreEvento = nombre.getText().toString().trim();
@@ -94,11 +101,14 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
                 String costeEventoString = precio.getText().toString().trim();
                 String ciudadEvento = ciudad.getSelectedItem().toString().trim();
                 String urlImagenEvento = urlImagen.getText().toString().trim();
-
+                String rutCreador = cuentaLogueada.getRutEmpresa();
 
                 // Obtener latitud y longitud
                 double latitud = ubicacionSeleccionada.latitude;
                 double longitud = ubicacionSeleccionada.longitude;
+
+                // Obtener Rut de la cuenta logueada
+
 
                 if (!validarCampos(nombreEvento, artistaEvento, descripcionEvento, direccionEvento, fechaEvento, costeEventoString, ciudadEvento, urlImagenEvento)) {
                     return;
@@ -122,6 +132,7 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
                 // Crear el objeto Evento
                 Eventos nuevoEvento = new Eventos(
                         urlImagenEvento,
+                        rutCreador,
                         nombreEvento,
                         descripcionEvento,
                         artistaEvento,

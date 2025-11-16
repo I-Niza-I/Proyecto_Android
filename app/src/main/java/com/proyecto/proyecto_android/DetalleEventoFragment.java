@@ -24,6 +24,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.FirebaseDatabase;
 import com.proyecto.proyecto_android.databinding.ActivityMapsBinding;
 
 public class DetalleEventoFragment extends Fragment implements OnMapReadyCallback {
@@ -32,9 +33,9 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
     private ActivityMapsBinding binding;
 
     private MyApplication myApplication;
-    private String id, nombre, artista,descripcion, direccion, ciudad, fecha, urlImagen;
+    private String id, nombre, artista,descripcion, direccion, ciudad, fecha, urlImagen, rutOrganizacionEvento;
     private int precio;
-    private Button botonAgregar;
+    private Button botonAgregar, botonEliminar;
     private TextView txtNombre, txtArtista, txtDireccion, txtCiudad, txtFecha, txtPrecio, txtDescripcion;
     private ImageView imvFoto;
     private Double latitud, longitud;
@@ -55,6 +56,7 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
 
         myApplication = (MyApplication) requireActivity().getApplication();
 
+
         if (getArguments() != null) {
             id = getArguments().getString("id");
             nombre = getArguments().getString("nombre");
@@ -67,10 +69,8 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
             urlImagen = getArguments().getString("urlImagen");
             latitud = getArguments().getDouble("latitud", 0);
             longitud = getArguments().getDouble("longitud", 0);
+            rutOrganizacionEvento = getArguments().getString("rutOrganizacion"); // <--- RECIBE EL RUT
         }
-
-
-        botonAgregar = (Button) view.findViewById(R.id.btn_agregar_favoritos);
 
         // Inicializar vistas
         txtDescripcion = view.findViewById(R.id.txtDescripcion);
@@ -81,6 +81,9 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
         txtFecha = view.findViewById(R.id.txtFecha);
         txtPrecio = view.findViewById(R.id.txtPrecio);
         imvFoto = view.findViewById(R.id.imvFoto);
+        botonAgregar = (Button) view.findViewById(R.id.btn_agregar_favoritos);
+        botonEliminar = (Button) view.findViewById(R.id.btn_eliminar_evento);
+
 
         // Configurar datos
         txtNombre.setText(nombre);
@@ -105,10 +108,23 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
             }
         }
 
+        Organizacion cuentaLogueada = myApplication.getCuentaLogueada();
+
+
+        if (cuentaLogueada != null && cuentaLogueada.getRutEmpresa().equals(rutOrganizacionEvento)) {
+            // MODO ORGANIZACIÓN: Es el dueño del evento
+            botonEliminar.setVisibility(View.VISIBLE);
+            botonAgregar.setVisibility(View.GONE);
+        } else {
+            // MODO USUARIO COMÚN: No es el dueño o no hay sesión
+            botonEliminar.setVisibility(View.GONE);
+            botonAgregar.setVisibility(View.VISIBLE); // El botón de favoritos se hará visible
+        }
+
         botonAgregar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Eventos eventoActual = new Eventos(urlImagen, nombre, descripcion, artista, fecha, direccion, ciudad, precio, latitud, longitud);
+                Eventos eventoActual = new Eventos(urlImagen, rutOrganizacionEvento, nombre, descripcion, artista, fecha, direccion, ciudad, precio, latitud, longitud);
                 eventoActual.setId(id);
 
                 Helper = new DBHelper(requireContext());
@@ -137,6 +153,7 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
                     cv.put("urlImagen", eventoActual.getUrlImagen());
                     cv.put("Latitud", eventoActual.getLatitud());
                     cv.put("Longitud", eventoActual.getLongitud());
+                    cv.put("RutOrganizacion", eventoActual.getRutOrganizacion());
 
                     long linea = db.insert("Favoritos", null, cv);
                     if (linea != -1) {
@@ -151,6 +168,34 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
                 db.close();
             }
         });
+
+        botonEliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Eventos eventoAEliminar = new Eventos(urlImagen, rutOrganizacionEvento, nombre, descripcion, artista, fecha, direccion, ciudad, precio, latitud, longitud);
+                eventoAEliminar.setId(id);
+
+                myApplication.removerFavorito(eventoAEliminar);
+
+                if (id != null) {
+                    FirebaseDatabase.getInstance().getReference("Evento")
+                            .child(id)
+                            .removeValue()
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(getContext(), "Evento eliminado con éxito", Toast.LENGTH_SHORT).show();
+                                // Regresar al fragmento anterior para que la lista se actualice
+                                if (getActivity() != null) {
+                                    getActivity().getSupportFragmentManager().popBackStack();
+                                }
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(getContext(), "Error al eliminar el evento", Toast.LENGTH_SHORT).show();
+                            });
+                }
+            }
+        });
+
         return view;
     }
 

@@ -13,6 +13,18 @@
         tools:context=".DetalleEventoFragment"
         tools:layout_editor_absoluteY="1dp">
 
+        <Button
+            android:id="@+id/btn_agregar_favoritos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="32dp"
+            android:text="@string/btn_agregar_favoritos"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/map"
+            app:layout_constraintStart_toStartOf="@+id/map"
+            app:layout_constraintTop_toBottomOf="@+id/map" />
+
         <ImageView
             android:id="@+id/imvFoto"
             android:layout_width="0dp"
@@ -129,33 +141,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtCiudad" />
 
+
         <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="0dp"
             android:layout_height="250dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="240dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginBottom="32dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn_agregar_favoritos"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider3"
             tools:context=".MapsActivity" />
-
-
-        <Button
-            android:id="@+id/btn_agregar_favoritos"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="32dp"
-            android:text="@string/btn_agregar_favoritos"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/map"
-            app:layout_constraintStart_toStartOf="@+id/map" />
 
         <TextView
             android:id="@+id/txtDescripcion"
@@ -166,6 +165,17 @@
             app:layout_constraintEnd_toEndOf="@+id/txtNombre"
             app:layout_constraintStart_toStartOf="@+id/txtNombre"
             app:layout_constraintTop_toBottomOf="@+id/txtNombre" />
+
+        <Button
+            android:id="@+id/btn_eliminar_evento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Eliminar"
+            app:layout_constraintEnd_toEndOf="@+id/map"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/map"
+            app:layout_constraintTop_toBottomOf="@+id/map" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

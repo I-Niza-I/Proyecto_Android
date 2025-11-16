@@ -7,6 +7,7 @@ public class Eventos {
     @Exclude // Evita que Firebase guarde este campo en el objeto, ya que es la clave principal.
     private String id;
     private String urlImagen;
+    private String rutOrganizacion;
     private String nombre;
     private String descripcion;
     private String artista;
@@ -19,8 +20,9 @@ public class Eventos {
 
     public Eventos() {}
 
-    public Eventos(String urlImagen, String nombre, String descripcion, String artista, String fecha, String direccion, String ciudad, int precio, Double latitud, Double longitud) {
+    public Eventos(String urlImagen, String rutOrganizacion, String nombre, String descripcion, String artista, String fecha, String direccion, String ciudad, int precio, Double latitud, Double longitud) {
         this.urlImagen = urlImagen;
+        this.rutOrganizacion = rutOrganizacion;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.artista = artista;
@@ -38,6 +40,14 @@ public class Eventos {
 
     public void setUrlImagen(String urlImagen) {
         this.urlImagen = urlImagen;
+    }
+
+    public String getRutOrganizacion() {
+        return rutOrganizacion;
+    }
+
+    public void setRutOrganizacion(String rutOrganizacion) {
+        this.rutOrganizacion = rutOrganizacion;
     }
 
     public Double getLatitud() {

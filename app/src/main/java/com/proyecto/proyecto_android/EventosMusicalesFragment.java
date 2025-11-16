@@ -94,6 +94,8 @@ public class EventosMusicalesFragment extends Fragment {
     }
 
     private void rellenarLista() {
+        Organizacion cuentaLogueada = myApplication.getCuentaLogueada();
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -105,7 +107,14 @@ public class EventosMusicalesFragment extends Fragment {
 
                     if (evento != null && eventoId != null) {
                         evento.setId(eventoId);
-                        listaEventos.add(evento);
+                        if (cuentaLogueada != null) {
+                            if (cuentaLogueada.getRutEmpresa().equals(evento.getRutOrganizacion())) {
+                                listaEventos.add(evento);
+                            }
+                        }
+                        else {
+                            listaEventos.add(evento);
+                        }
                     }
                 }
                 myAdapter.notifyDataSetChanged();

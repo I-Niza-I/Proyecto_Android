@@ -14,17 +14,18 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE Favoritos(" +
-                "Id TEXT PRIMARY KEY NOT NULL, " + // Mejor usar el ID de Firebase como clave
+                "Id TEXT PRIMARY KEY NOT NULL, " +
                 "Nombre TEXT NOT NULL, " +
                 "Artista TEXT NOT NULL, " +
-                "Descripcion TEXT, " +             // Es buena idea guardar la descripción
+                "Descripcion TEXT, " +
                 "Direccion TEXT NOT NULL, " +
                 "Ciudad TEXT NOT NULL, " +
                 "Fecha TEXT NOT NULL, " +
                 "Precio INTEGER NOT NULL, " +
-                "urlImagen TEXT, " +               // Columna con el nombre correcto
-                "Latitud REAL, " +                 // Columna para latitud
-                "Longitud REAL)");
+                "urlImagen TEXT, " +
+                "Latitud REAL, " +
+                "Longitud REAL, " + // <-- Añade una coma
+                "RutOrganizacion TEXT)"); // <-- NUEVA COLUMNA
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

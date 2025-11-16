@@ -37,7 +37,7 @@ public class MyApplication extends Application {
     public void agregarFavorito(Eventos evento) {
         if (!eventosFavoritos.contains(evento)) {
             eventosFavoritos.add(evento);
-            Toast.makeText(this, "Evento publicado con éxito", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Evento agregado a favoritos", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this, "Ya existe un evento con este nombre", Toast.LENGTH_SHORT).show();
         }
@@ -47,15 +47,20 @@ public class MyApplication extends Application {
         DBHelper dbHelper = new DBHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        String selection = "Nombre = ? AND Artista = ?";
-        String[] selectionArgs = { evento.getNombre(), evento.getArtista() };
+        String selection = "Id = ?";
+        String[] selectionArgs = {evento.getId() };
 
         int deletedRows = db.delete("Favoritos", selection, selectionArgs);
 
         db.close();
 
         if (deletedRows > 0) {
-            eventosFavoritos.remove(evento);
+            for (int i = 0; i < eventosFavoritos.size(); i++) {
+                if (eventosFavoritos.get(i).getId().equals(evento.getId())) {
+                    eventosFavoritos.remove(i);
+                    break;
+                }
+            }
             Toast.makeText(this, "Eliminado de favoritos", Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -142,8 +147,9 @@ public class MyApplication extends Application {
                 String urlImagen = cursor.getString(cursor.getColumnIndexOrThrow("urlImagen"));
                 double latitud = cursor.getDouble(cursor.getColumnIndexOrThrow("Latitud"));
                 double longitud = cursor.getDouble(cursor.getColumnIndexOrThrow("Longitud"));
+                String rutOrganizacion = cursor.getString(cursor.getColumnIndexOrThrow("RutOrganizacion"));
 
-                Eventos evento = new Eventos(urlImagen, nombre, descripcion, artista, fecha, direccion, ciudad, precio, latitud, longitud);
+                Eventos evento = new Eventos(urlImagen, rutOrganizacion, nombre, descripcion, artista, fecha, direccion, ciudad, precio, latitud, longitud);
                 evento.setId(id);
 
                 eventosFavoritos.add(evento);
