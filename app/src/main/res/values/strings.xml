@@ -66,7 +66,8 @@
     <string name="crear_urlImagen">Ingrese la url de la imagen del evento</string>
 
     <string name="btn_publicar">Publicar Evento</string>
-
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

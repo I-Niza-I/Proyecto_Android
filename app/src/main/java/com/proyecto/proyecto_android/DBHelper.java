@@ -24,8 +24,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "Precio INTEGER NOT NULL, " +
                 "urlImagen TEXT, " +
                 "Latitud REAL, " +
-                "Longitud REAL, " + // <-- Añade una coma
-                "RutOrganizacion TEXT)"); // <-- NUEVA COLUMNA
+                "Longitud REAL, " +
+                "RutOrganizacion TEXT)");
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

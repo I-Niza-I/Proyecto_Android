@@ -17,7 +17,7 @@
             android:id="@+id/btn_agregar_favoritos"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="160dp"
             android:layout_marginBottom="32dp"
             android:text="@string/btn_agregar_favoritos"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -148,7 +148,7 @@
             android:layout_width="0dp"
             android:layout_height="250dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="240dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -175,6 +175,20 @@
             app:layout_constraintEnd_toEndOf="@+id/map"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/map"
+            app:layout_constraintTop_toBottomOf="@+id/map" />
+
+        <Button
+            android:id="@+id/btn_modificar_evento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="95dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="95dp"
+            android:text="Modificar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/map" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

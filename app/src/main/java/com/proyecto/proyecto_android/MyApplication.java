@@ -16,21 +16,14 @@ public class MyApplication extends Application {
     private static ArrayList<Eventos> listaEventos = new ArrayList<Eventos>();
     private static ArrayList<Eventos> eventosFavoritos = new ArrayList<Eventos>();
     private static ArrayList<Eventos> historialEventos = new ArrayList<Eventos>();
-    private static ArrayList<Organizacion> listaCuentas = new ArrayList<Organizacion>();
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
-        rellenarOrganizacion();
         cargarFavoritosDesdeBD();
     }
 
-    public void rellenarOrganizacion(){
-        Organizacion o1 = new Organizacion("12345678-9", "NombreGenerico", "ejemplo1@gmail.com", "descripcion", "1234");
-        Organizacion o2 = new Organizacion("98765432-1", "NombreGenerico2", "ejemplo2@gmail.com", "descripcion2", "4321");
-        listaCuentas.addAll(Arrays.asList(new Organizacion[] {o1,  o2}));
-    }
 
 
     // Métodos para modificar los arrays
@@ -94,23 +87,6 @@ public class MyApplication extends Application {
         for(int i = 0 ; i < listaEventos.size() ; i++){
             eventoRecorrido = listaEventos.get(i);
             if(eventoRecorrido.getNombre().equals(evento.getNombre())){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void crearCuenta(Organizacion organizacion){
-        if(!organizacionExiste(organizacion)){
-            listaCuentas.add(organizacion);
-        }
-    }
-
-    public boolean organizacionExiste(Organizacion organizacion){
-        Organizacion cuentaRecorrida;
-        for(int i = 0 ; i < listaCuentas.size() ; i++){
-            cuentaRecorrida = listaCuentas.get(i);
-            if(cuentaRecorrida.getRutEmpresa().equals(organizacion.getRutEmpresa())){
                 return true;
             }
         }
@@ -218,11 +194,4 @@ public class MyApplication extends Application {
         this.historialEventos = historialEventos;
     }
 
-    public ArrayList<Organizacion> getListaCuentas() {
-        return listaCuentas;
-    }
-
-    public static void setListaCuentas(ArrayList<Organizacion> listaCuentas) {
-        MyApplication.listaCuentas = listaCuentas;
-    }
 }

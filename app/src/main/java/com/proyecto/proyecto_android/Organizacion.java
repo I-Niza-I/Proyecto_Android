@@ -7,6 +7,7 @@ public class Organizacion {
     private String correo;
     private String descripcion;
     private String password;
+    public Organizacion() {}
 
     public Organizacion(String rutEmpresa, String nombre, String correo, String descripcion, String password) {
         this.rutEmpresa = rutEmpresa;

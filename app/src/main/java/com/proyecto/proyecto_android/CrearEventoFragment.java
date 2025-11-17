@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,8 @@ import java.util.Locale;
 
 public class CrearEventoFragment extends Fragment implements OnMapReadyCallback {
 
+    private boolean esModoModificacion = false;
+    private String idEventoAModificar;
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
@@ -57,6 +60,8 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Evento");
 
+
+
         urlImagen = (EditText) view.findViewById(R.id.edt_urlImagen);
         nombre = (EditText) view.findViewById(R.id.edt_nombre);
         artista = (EditText) view.findViewById(R.id.edt_artista);
@@ -64,8 +69,16 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
         direccion = (EditText) view.findViewById(R.id.edt_direccion);
         fecha = (EditText) view.findViewById(R.id.edt_fecha);
         precio = (EditText) view.findViewById(R.id.edt_coste);
-
         ciudad = (Spinner) view.findViewById(R.id.spn_ciudades);
+        btn_publicar = (Button) view.findViewById(R.id.btn_publicar);
+
+        if (getArguments() != null) {
+            esModoModificacion = getArguments().getBoolean("esModoModificacion", false);
+            if (esModoModificacion) {
+                idEventoAModificar = getArguments().getString("id");
+                rellenarCamposParaModificar();
+            }
+        }
 
         fecha.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +87,7 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
             }
         });
 
-        btn_publicar = (Button) view.findViewById(R.id.btn_publicar);
+
 
         btn_publicar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +143,7 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
                 }
 
                 // Crear el objeto Evento
-                Eventos nuevoEvento = new Eventos(
+                Eventos evento = new Eventos(
                         urlImagenEvento,
                         rutCreador,
                         nombreEvento,
@@ -144,14 +157,36 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
                         longitud
                 );
 
-                String id = databaseReference.push().getKey();
-                databaseReference.child(id).setValue(nuevoEvento)
-                        .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(requireContext(), "Evento agregado", Toast.LENGTH_SHORT).show();
-                        })
-                        .addOnFailureListener(e ->
-                                Toast.makeText(requireContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show()
-                        );
+                if (esModoModificacion) {
+                    // MODO MODIFICACIÓN: Actualiza el evento existente usando su ID.
+                    databaseReference.child(idEventoAModificar).setValue(evento)
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(requireContext(), "Evento actualizado con éxito", Toast.LENGTH_SHORT).show();
+                                if (getActivity() != null) {
+                                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                                    fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                                    fragmentManager.beginTransaction()
+                                            .replace(R.id.fragment_container, new EventosMusicalesFragment())
+                                            .commit();
+                                }
+                            })
+                            .addOnFailureListener(e ->
+                                    Toast.makeText(requireContext(), "Error al actualizar: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                            );
+                } else {
+                    // MODO CREACIÓN: Crea un nuevo evento con un nuevo ID.
+                    String id = databaseReference.push().getKey();
+                    databaseReference.child(id).setValue(evento)
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(requireContext(), "Evento agregado", Toast.LENGTH_SHORT).show();
+                                limpiar();
+                            })
+                            .addOnFailureListener(e ->
+                                    Toast.makeText(requireContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                            );
+                }
             }
         });
 
@@ -161,10 +196,27 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
+
+        // Muestra los botones de Zoom
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+
         // Agrega el marcador, mueve la camara y hace zoom
-        LatLng ubicacionEvento = new LatLng(-29.958288, -71.339126);
-        mMap.addMarker(new MarkerOptions().position(ubicacionEvento).title("Coquimbo"));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubicacionEvento, 10f), 2000, null);
+        LatLng ubicacionInicial;
+        float zoomInicial;
+
+        if (esModoModificacion && ubicacionSeleccionada != null) {
+            // MODO MODIFICACIÓN: Centra el mapa en la ubicación existente del evento.
+            ubicacionInicial = ubicacionSeleccionada;
+            zoomInicial = 15f;
+            // Agrega el marcador de la ubicación actual
+            mMap.addMarker(new MarkerOptions().position(ubicacionInicial).title("Ubicación actual del evento"));
+        } else {
+            // MODO CREACIÓN: Centra el mapa en una ubicación por defecto.
+            ubicacionInicial = new LatLng(-29.958288, -71.339126);
+            zoomInicial = 10f;
+        }
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubicacionInicial, zoomInicial), 2000, null);
 
         // Configurar el listener para clicks en el mapa
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -193,6 +245,28 @@ public class CrearEventoFragment extends Fragment implements OnMapReadyCallback 
 
         Toast.makeText(getContext(), "Ubicación seleccionada: " + latLng.latitude + ", " + latLng.longitude,
                 Toast.LENGTH_SHORT).show();
+    }
+
+    private void rellenarCamposParaModificar() {
+        Bundle args = getArguments();
+        if (args == null) return;
+
+        btn_publicar.setText("Actualizar Evento");
+
+        urlImagen.setText(args.getString("urlImagen"));
+        nombre.setText(args.getString("nombre"));
+        artista.setText(args.getString("artista"));
+        descripcion.setText(args.getString("descripcion"));
+        direccion.setText(args.getString("direccion"));
+        fecha.setText(args.getString("fecha"));
+        precio.setText(String.valueOf(args.getInt("precio")));
+
+        String ciudadEvento = args.getString("ciudad");
+
+        double lat = args.getDouble("latitud");
+        double lon = args.getDouble("longitud");
+        ubicacionSeleccionada = new LatLng(lat, lon);
+
     }
 
     public void limpiar(){

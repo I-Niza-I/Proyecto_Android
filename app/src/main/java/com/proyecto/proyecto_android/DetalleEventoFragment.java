@@ -35,7 +35,7 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
     private MyApplication myApplication;
     private String id, nombre, artista,descripcion, direccion, ciudad, fecha, urlImagen, rutOrganizacionEvento;
     private int precio;
-    private Button botonAgregar, botonEliminar;
+    private Button botonAgregar, botonEliminar, botonModificar;
     private TextView txtNombre, txtArtista, txtDireccion, txtCiudad, txtFecha, txtPrecio, txtDescripcion;
     private ImageView imvFoto;
     private Double latitud, longitud;
@@ -56,7 +56,6 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
 
         myApplication = (MyApplication) requireActivity().getApplication();
 
-
         if (getArguments() != null) {
             id = getArguments().getString("id");
             nombre = getArguments().getString("nombre");
@@ -69,7 +68,7 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
             urlImagen = getArguments().getString("urlImagen");
             latitud = getArguments().getDouble("latitud", 0);
             longitud = getArguments().getDouble("longitud", 0);
-            rutOrganizacionEvento = getArguments().getString("rutOrganizacion"); // <--- RECIBE EL RUT
+            rutOrganizacionEvento = getArguments().getString("rutOrganizacion");
         }
 
         // Inicializar vistas
@@ -83,6 +82,7 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
         imvFoto = view.findViewById(R.id.imvFoto);
         botonAgregar = (Button) view.findViewById(R.id.btn_agregar_favoritos);
         botonEliminar = (Button) view.findViewById(R.id.btn_eliminar_evento);
+        botonModificar = (Button) view.findViewById(R.id.btn_modificar_evento);
 
 
         // Configurar datos
@@ -95,8 +95,8 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
         txtPrecio.setText("$" + precio);
         Glide.with(requireContext())
                 .load(urlImagen)
-                .placeholder(R.drawable.place_holder) // Muestra una imagen de carga
-                .error(R.drawable.place_holder)       // Muestra una imagen si hay error
+                .placeholder(R.drawable.place_holder) // Muestra el placeholder como una imagen de carga
+                .error(R.drawable.place_holder) // Muestra un el placeholder si hay error
                 .into(imvFoto);
 
         Bundle bundle = getArguments();
@@ -112,13 +112,15 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
 
 
         if (cuentaLogueada != null && cuentaLogueada.getRutEmpresa().equals(rutOrganizacionEvento)) {
-            // MODO ORGANIZACIÓN: Es el dueño del evento
+            // MODO ORGANIZACION: Es el dueño del evento
             botonEliminar.setVisibility(View.VISIBLE);
+            botonModificar.setVisibility(View.VISIBLE);
             botonAgregar.setVisibility(View.GONE);
         } else {
-            // MODO USUARIO COMÚN: No es el dueño o no hay sesión
+            // MODO USUARIO COMUN: No es el dueño o no hay sesión
             botonEliminar.setVisibility(View.GONE);
-            botonAgregar.setVisibility(View.VISIBLE); // El botón de favoritos se hará visible
+            botonModificar.setVisibility(View.GONE);
+            botonAgregar.setVisibility(View.VISIBLE);
         }
 
         botonAgregar.setOnClickListener(new View.OnClickListener(){
@@ -169,6 +171,28 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
             }
         });
 
+        botonModificar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CrearEventoFragment modificarFragment = new CrearEventoFragment();
+
+                Bundle bundle = getArguments();
+
+                if (bundle != null) {
+                    bundle.putBoolean("esModoModificacion", true);
+                }
+
+                modificarFragment.setArguments(bundle);
+
+                if (getActivity() != null) {
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, modificarFragment)
+                            .addToBackStack(null) // Permite volver atrás al detalle.
+                            .commit();
+                }
+            }
+        });
+
         botonEliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,6 +226,10 @@ public class DetalleEventoFragment extends Fragment implements OnMapReadyCallbac
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
+
+        // Muestra los botones de Zoom
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+
         // Agrega el marcador, mueve la camara y hace zoom
         LatLng ubicacionEvento = new LatLng(latitud, longitud);
         mMap.addMarker(new MarkerOptions().position(ubicacionEvento).title(direccion));
