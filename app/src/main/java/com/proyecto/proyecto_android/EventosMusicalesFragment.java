@@ -20,8 +20,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 
 public class EventosMusicalesFragment extends Fragment {
@@ -60,6 +64,8 @@ public class EventosMusicalesFragment extends Fragment {
 
         rellenarLista();
 
+
+
         edt_buscar.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -92,7 +98,59 @@ public class EventosMusicalesFragment extends Fragment {
         // Actualiza el adaptador con la nueva lista filtrada
         myAdapter.filtrarLista(listaFiltrada);
     }
+    private void filtrarEventosPasados() {
+        ArrayList<Eventos> eventosFuturos = new ArrayList<>();
 
+        for (Eventos evento : listaEventos) {
+            if (esEventoPasado(evento.getFecha())) {
+                eventosFuturos.add(evento);
+            }
+        }
+        // Actualiza con los eventos futuros
+        myAdapter.filtrarLista(eventosFuturos);
+    }
+
+    private boolean esEventoPasado(String fechaEventoStr) {
+        try {
+            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            Date fechaEvento = df.parse(fechaEventoStr);
+            Date fechaActual = new Date();
+
+            Calendar calEvento = Calendar.getInstance();
+            Calendar calActual = Calendar.getInstance();
+            calEvento.setTime(fechaEvento);
+            calActual.setTime(fechaActual);
+
+            //para poder comparar años, meses y días del evento con la fecha actual
+            int aEvento = calEvento.get(Calendar.YEAR);
+            int mEvento = calEvento.get(Calendar.MONTH);
+            int dEvento = calEvento.get(Calendar.DAY_OF_MONTH);
+
+            int aActual = calActual.get(Calendar.YEAR);
+            int mActual = calActual.get(Calendar.MONTH);
+            int dActual = calActual.get(Calendar.DAY_OF_MONTH);
+
+            // retornando false si es pasado y true si es futuro o igual
+            if (aEvento < aActual) {
+                return false;
+            } else if (aEvento == aActual) {
+                if (mEvento < mActual) {
+                    return false;
+                } else if (mEvento == mActual) {
+                    if (dEvento < dActual) {
+                        return false;
+                    } else if (dEvento == dActual) {
+                        return true;
+                    }
+                }
+            }
+            return true;
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return true;
+        }
+    }
     private void rellenarLista() {
         Organizacion cuentaLogueada = myApplication.getCuentaLogueada();
 
@@ -118,6 +176,7 @@ public class EventosMusicalesFragment extends Fragment {
                     }
                 }
                 myAdapter.notifyDataSetChanged();
+                filtrarEventosPasados();
             }
             @Override
             public void onCancelled(DatabaseError error) {
