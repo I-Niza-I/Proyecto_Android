@@ -97,13 +97,7 @@ public class MainActivity extends AppCompatActivity {
                             .addToBackStack(null)
                             .commit();
                 }
-                if (item.getItemId() == R.id.nav_perfil) {
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, new Perfil())
-                            .addToBackStack(null)
-                            .commit();
-                }
+
                 if (item.getItemId() == R.id.nav_cerrarSesion) {
                     myApplication.cerrarSesion();
 
@@ -115,6 +109,14 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 if (item.getItemId() == R.id.nav_inicioSesion) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new InicioSesionFragment())
+                            .addToBackStack(null)
+                            .commit();
+                }
+                //para maps, cambiar fragment
+                if (item.getItemId() == R.id.nav_maps) {
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragment_container, new InicioSesionFragment())
@@ -157,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Elementos visibles solo si hay sesion activa
         menu.findItem(R.id.nav_crear_evento).setVisible(sesionActiva).setEnabled(sesionActiva);
-        menu.findItem(R.id.nav_perfil).setVisible(sesionActiva).setEnabled(sesionActiva);
         menu.findItem(R.id.nav_cerrarSesion).setVisible(sesionActiva).setEnabled(sesionActiva);
 
         // Elementos usuario comun

@@ -17,9 +17,6 @@
             android:id="@+id/nav_favoritos"
             android:title="Favoritos"
             android:icon="@drawable/ic_action_guar"/>
-    </group>
-    <!-- Separadores abajo -->
-    <group>
         <item
             android:id="@+id/nav_crear_evento"
             android:title="Crear evento"
@@ -27,11 +24,10 @@
             android:enabled="false"
             android:visible="false"/>
         <item
-            android:id="@+id/nav_perfil"
-            android:title="perfil"
-            android:icon="@drawable/ic_action_sesion"
-            android:enabled="false"
-            android:visible="false"/>
+            android:id="@+id/nav_maps"
+            android:title="Mapa Eventos"
+            android:icon="@drawable/maps"/>
+
     </group>
     <item
         android:id="@+id/separator3"
